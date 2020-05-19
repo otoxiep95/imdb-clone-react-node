@@ -1,0 +1,4 @@
+client/node_modules
+server/node_modules
+server/config/db_config.js
+server/config/mailer_config.js
