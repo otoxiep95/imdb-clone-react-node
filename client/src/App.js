@@ -1,34 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import keys from '../src/config/keys.js'
 import Login from './components/Login/Login.js';
-import './App.css';
 import Navbar from './components/Navbar/Navbar.js';
 import Signup from './components/Signup/Signup.js';
 import Home from './components/Home/Home.js';
+import Watchlist from './components/Watchlist/Watchlist.js';
+import Profile from './components/Profile/Profile.js';
+import './App.css';
+import MovieItem from './components/MovieItem/MovieItem.js';
 
 export default function App() {
-
-  const [movie, setMovie] = useState("");
-
-  function fetchMovies() {
-    fetch(`https://api.themoviedb.org/3/movie/550?api_key=${keys.apiKey}`)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .then(data => {
-        console.log(data);
-        setMovie(data);
-      })
-  }
-
-  useEffect(() => {
-    fetchMovies();
-  }, []);
-  
-/*   const posterPath = `https://image.tmdb.org/t/p/w500/${movie.poster_path}` */
   return (
     <Router>
       <div className="App">
@@ -40,6 +21,18 @@ export default function App() {
             <Route 
               exact path="/" 
               component={Home} 
+            />
+            <Route 
+              path="/profile" 
+              component={Profile} 
+            />
+            <Route 
+              path="/watchlist" 
+              component={Watchlist} 
+            />
+            <Route 
+              path="/movie/:id" 
+              component={MovieItem} 
             />
             <Route 
               path="/login" 
