@@ -1,0 +1,25 @@
+.Home {
+    text-align: center;
+}
+.movie-list {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    overflow-x: scroll;
+    column-gap: 10px;
+    margin: 20px;
+}
+
+.movie-list img {
+    width: 200px;
+}
+
+.movie {
+    display: grid;
+}
+
+.poster-container {
+    width: 200px;
+    height: 300px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}

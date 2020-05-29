@@ -1,0 +1,31 @@
+.movie-header {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right -200px top;
+    height: 550px;
+}
+
+.inner-movie-header {
+    background: linear-gradient(to right, rgb(20, 20, 50) 150px, rgba(144, 102, 102, 0.84) 100%);
+    height: 100%;
+    
+    display: grid;
+    grid-template-columns: .5fr 1fr;
+    align-items: center;
+    color: white;
+}
+
+.inner-movie-header p {
+    margin-top: 10px;
+    margin-right: 80px;
+}
+
+.inner-movie-header .poster {
+    margin-left: 50px;
+}
+
+.inner-movie-header .poster img {
+    width: 320px;
+    border-radius: 10px;
+}
+
