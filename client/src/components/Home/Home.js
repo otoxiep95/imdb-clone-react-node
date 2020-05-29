@@ -65,42 +65,39 @@ export default function Home() {
                     <h2>Popular</h2>
                     <div className="movie-list popular">
                         {popularMovies && popularMovies.map(movie => (
-                            <Link to={"/movie/" + movie.id}>  
-                                <div key={movie.id} className="movie">
+                            <div key={movie.id} className="movie">
+                                <Link to={"/movie/" + movie.id}>  
                                     <h3>{movie.title}</h3>
-                                    <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
+                                    <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
                                     <button>Watchlist</button>
-                                </div>
-                            </Link>
+                                </Link>
+                            </div>
                         ))}
                     </div>
 
                     <h2>Top rated</h2>
                     <div className="movie-list top-rated">
                         {topRatedMovies && topRatedMovies.map(movie => (
-                            <Link to={"/movie/" + movie.id}> 
-                                <div key={movie.id} className="movie">
+                            <div key={movie.id} className="movie">
+                                <Link to={"/movie/" + movie.id}> 
                                     <h3>{movie.title}</h3>
-                                    <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
+                                    <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
                                     <button>Watchlist</button>
-                                </div>
-                            </Link>
+                                </Link>
+                            </div>
                         ))}
                     </div>
 
                     <h2>Upcoming</h2>
                     <div className="movie-list upcoming">
                         {upcomingMovies && upcomingMovies.map(movie => (
-                            <Link to={"/movie/" + movie.id}> 
-                                <div key={movie.id} className="movie">
+                            <div key={movie.id} className="movie">
+                                <Link to={"/movie/" + movie.id}> 
                                     <h3>{movie.title}</h3>
-                                    <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}>
-
-                                    </div>
-                                    {/* <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/> */}
+                                    <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
                                     <button>Watchlist</button>
-                                </div>
-                            </Link>
+                                </Link>
+                            </div>
                         ))}
                     </div>
                 </>

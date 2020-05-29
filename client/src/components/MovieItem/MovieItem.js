@@ -39,7 +39,9 @@ export default function MovieItem(props) {
                                 <h1>{movie.title} ({movie.year})</h1>
                                 <p>{movie.release_date} (US)</p>
                                 {movie.genres && movie.genres.map(genre => (
-                                    <span>{genre.name} </span>
+                                    <div key={genre.id}>
+                                        <span>{genre.name} </span>
+                                    </div>
                                 ))}
                                 <p>{movie.overview}</p>
                             </div>
