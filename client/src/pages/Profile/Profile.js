@@ -8,6 +8,7 @@ export default function Profile() {
         fetch("http://localhost:9090/api/users", {
             credentials: "include",
         })
+            .then(res => res.json())
             .then((data) => {
                 console.log(data);
                 setUsername(data.username);
