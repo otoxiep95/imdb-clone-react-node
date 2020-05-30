@@ -66,13 +66,13 @@ export default function MovieItem(props) {
                         <h2>Reviews</h2>
                     </div>
                     <div className="similar">
-                        <h2>Similar movies</h2>
+                        {similarMovies.length ? <h2>Similar movies</h2> : ''}
                         <div className="movie-list similar">
                             {similarMovies && similarMovies.map(movie => (
                                 <div key={movie.id} className="movie">
                                     <Link to={"/movie/" + movie.id}>  
-                                        <h3>{movie.title}</h3>
                                         <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
+                                        <h3>{movie.title}</h3>
                                         <button>Watchlist</button>
                                     </Link>
                                 </div>
