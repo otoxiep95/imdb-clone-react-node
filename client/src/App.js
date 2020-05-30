@@ -20,7 +20,7 @@ export default function App() {
         "Content-Type": "application/json"
       }
     }).then(res => {
-      /* console.log(res); */
+      console.log(res);
       if (res.ok) {
         setIsAuthenticated(true);
       }

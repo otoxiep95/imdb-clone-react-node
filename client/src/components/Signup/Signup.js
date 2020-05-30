@@ -30,11 +30,11 @@ export default function Signup() {
                 throw res;
             }
         })
-            .catch(error => {
-                error.json().then(body => {
-                    setError(body.response);
-                })
+        .catch(error => {
+            error.json().then(body => {
+                setError(body.response);
             })
+        })
     }
 
     return (

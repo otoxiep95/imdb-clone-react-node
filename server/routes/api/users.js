@@ -10,7 +10,7 @@ var saltRounds = bcrypt.genSaltSync(10);
 //check if user is logged in
 router.get("/isloggedin", async (req, res) => {
   if (!req.session.user) {
-    return res.status(404).send({ response: "Not logged in" });
+    return res.status(403).send({ response: "Not logged in" });
   } else {
     return res
       .status(200)
@@ -20,47 +20,42 @@ router.get("/isloggedin", async (req, res) => {
 
 router.post("/register", async (req, res, next) => {
   const { username, email, password, confirm_password } = req.body;
-  if (email && password && confirm_password && password === confirm_password) {
-    if (password.length < 8) {
-      return res
-        .status(400)
-        .send({ response: "Password does not fulfill the requirements" });
-    } else {
-      bcrypt.hash(password, saltRounds, async (error, hashedPassword) => {
-        if (error) {
-          return res.status(500).send({});
-        }
-        try {
-          const existingUser = await User.query()
-            .select()
-            .where({ email: email })
-            .limit(1);
 
-          if (existingUser[0]) {
-            return res.status(404).send({ response: "User already exists" });
-          } else {
-            const newUser = await User.query().insert({
-              username,
-              email,
-              password: hashedPassword,
-            });
 
-            return res.status(200).send({ email: newUser.email });
-          }
-        } catch (error) {
-          return res
-            .status(500)
-            .send({ response: "Something went wrong with the database" });
-        }
-      });
+    if(!username || !email || !password || !confirm_password) {
+      return res.status(400).send({ response: "missing fields" });
     }
-  } else if (password !== repeatPassword) {
-    return res
-      .status(404)
-      .send({ response: "Password and repeat password are not the same" });
-  } else {
-    return res.status(404).send({ response: "Missing fields" });
-  }
+
+    if (password && password.length < 8) {
+      return res.status(400).send({ response: "password does not fulfill the requirements" });
+    }
+    
+    if (password !== confirm_password ) {
+      return res.status(400).send({ response: "passwords do not match" });
+    }
+
+    if (username && email) {
+      const userExists = await User.query()
+        .where('username', username)
+        .orWhere('email', email);
+
+        if(userExists.length) {
+            return res.status(400).send({ response: "username or email already exists" });
+        }
+    }
+    
+    bcrypt.hash(password, saltRounds, async (error, hashedPassword) => {
+      if(error) {
+        return res.status(500).send({ response: "error creating user" });
+      }
+  
+      try {
+        const user = await User.query().insert({ username, email, password: hashedPassword });
+        return res.status(200).send({ user, response: "user created" });
+      } catch(err) {
+        next(err);
+      }
+    });
 });
 
 //login
