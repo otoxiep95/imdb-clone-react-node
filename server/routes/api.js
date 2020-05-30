@@ -4,6 +4,7 @@ const app = express();
 const usersRoutes = require("./api/users");
 const reviewRoutes = require("./api/review");
 const watchLinkRoutes = require("./api/watchlink");
+const likeRoutes = require("./api/like");
 // Include the routes to express
 app.use("/users", usersRoutes);
 app.use("/review", reviewRoutes);

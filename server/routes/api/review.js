@@ -6,14 +6,23 @@ const Review = require("../../models/Review.js");
 
 //get all reviews for movie
 router.get("/:movieId/", async (req, res) => {
-  movieId = req.param.movieId;
+  movieId = req.params.movieId;
   const movieReviews = Review.query().where("movie_id", movieId);
   res.json(movieReviews);
 });
+//get all reviews from user
+router.get("/", async (req, res)=>{
+  if(req.session.user){
+
+  }else{
+
+  }
+})
 
 router.get("/userhasreview/:movieId/", async (req, res) => {
-  movieId = req.param.movieId;
-  const hasReview = await Review.query().where({
+  movieId = req.params.movieId;
+  if(req.session.user){
+     const hasReview = await Review.query().where({
     user_id: req.session.user.id,
     movie_id: movie_id,
   });
@@ -22,6 +31,10 @@ router.get("/userhasreview/:movieId/", async (req, res) => {
   } else {
     res.status(400).send({ response: "Already has review" });
   }
+  }else{
+    
+  }
+ 
 });
 
 //post new review
@@ -59,6 +72,41 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.patch("/:id", async (req, res) => {
+  reviewId = req.params.id;
+  const { title, rating, content } = req.body;
+  if (req.session.user) {
+    //check if review belongs to user
+    const userReview = Review.query().where({
+      id: reviewId,
+      user_id: req.session.user.id,
+    });
+    if (userReview) {
+      await userReview.$query().patch({
+        title,
+        rating,
+        content,
+      });
+    } else {
+      res.status(404).send({ response: "couldnt find review" });
+    }
+  } else {
+    res.status(404).send({ response: "not logged in" });
+  }
+});
 
+router.delete("/:id", async (req, res) => {
+  reviewId = req.params.id;
+  if (req.session.user) {
+    try {
+      await Review.query().deleteById(reviewId);
+      res.status(200).send({ response: "deleted review succcess" });
+    } catch (error) {
+      res.status(500).send({ response: "couldnt delele user" });
+    }
+  } else {
+    res.status(403).send({ response: "Not logged in" });
+  }
+});
 // Export to api.js
 module.exports = router;
