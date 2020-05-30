@@ -10,9 +10,9 @@ var saltRounds = bcrypt.genSaltSync(10);
 //check if user is logged in
 router.get("/isloggedin", async (req, res) => {
   if (req.session.user) {
-    res.status(200).send({ user: req.session.user, response: "Authenticated" });
+    return res.status(200).send({ user: req.session.user, response: "Authenticated" });
   } else {
-    res.status(404).send({ response: "Not logged in" });
+    return res.status(404).send({ response: "Not logged in" });
   }
 });
 

@@ -6,6 +6,7 @@ export default function Signup() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [confirmPassword, setConfirmPassword] = useState();
+    const [error, setError] = useState("");
     const history = useHistory();
 
     function register() {
@@ -23,9 +24,17 @@ export default function Signup() {
                 confirm_password: confirmPassword,
             }),
         }).then((res) => {
-            console.log(res);
-            history.push("/login");
-        });
+            if (res.ok) {
+                history.push('/login');
+            } else {
+                throw res;
+            }
+        })
+            .catch(error => {
+                error.json().then(body => {
+                    setError(body.response);
+                })
+            })
     }
 
     return (
@@ -58,6 +67,9 @@ export default function Signup() {
                 />
                 <button type="button" onClick={register}>Sign Up</button>
             </form>
+            <div>
+                {error ? <p className="error">{error}</p> : ""}
+            </div>
         </div>
     )
 }

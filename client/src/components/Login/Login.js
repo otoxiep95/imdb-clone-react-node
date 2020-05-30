@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-export default function Login({ setIsLogged }) {
+export default function Login(props) {
+    const { setIsAuthenticated } = props;
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
     const history = useHistory();
 
     function login() {
@@ -19,11 +22,19 @@ export default function Login({ setIsLogged }) {
                 password: password,
             }),
         })
-            .then((response) => response.json())
             .then((res) => {
                 console.log(res);
-                setIsLogged(true);
-                history.push("/");
+                if (res.ok) {
+                    setIsAuthenticated(true);
+                    history.push("/");
+                } else {
+                    throw res;
+                }
+            })
+            .catch(error => {
+                error.json().then(body => {
+                    setError(body.response);
+                })
             });
     }
 
@@ -47,6 +58,9 @@ export default function Login({ setIsLogged }) {
             </form>
             <div>
                 <p>Forgot your password? Reset it here</p>
+            </div>
+            <div>
+                {error ? <p className="error">{error}</p> : ""}
             </div>
         </div>
     )
