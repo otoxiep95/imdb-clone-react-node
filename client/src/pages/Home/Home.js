@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import keys from '../../config/keys';
 import inception from '../../images/inception.png'
 import './Home.css';
+import MovieCard from '../../components/MovieCard/MovieCard';
 
 export default function Home() {
     const [popularMovies, setPopularMovies] = useState([]);
@@ -80,48 +80,30 @@ export default function Home() {
                     <h2>Popular</h2>
                     <div className="movie-list popular">
                       {popularMovies && popularMovies.map(movie => (
-                        <div key={movie.id} className="movie">
-                          <Link to={"/movie/" + movie.id}>  
-                            <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
-                            <div className="movie-info">
-                              <h3>{movie.title}</h3>
-                              <button>Watchlist</button>
-                              <button>Favorite</button>
-                            </div>
-                          </Link>
-                        </div>
+                        <MovieCard
+                          key={movie.id}
+                          movie={movie}
+                        />
                       ))}
                     </div>
 
                     <h2>Top rated</h2>
                     <div className="movie-list top-rated">
                         {topRatedMovies && topRatedMovies.map(movie => (
-                            <div key={movie.id} className="movie">
-                                <Link to={"/movie/" + movie.id}> 
-                                    <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
-                                    <div className="movie-info">
-                                      <h3>{movie.title}</h3>
-                                      <button>Watchlist</button>
-                                      <button>Favorite</button>
-                                    </div>
-                                </Link>
-                            </div>
+                          <MovieCard
+                            key={movie.id}
+                            movie={movie}
+                          />
                         ))}
                     </div>
 
                     <h2>Upcoming</h2>
                     <div className="movie-list upcoming">
                         {upcomingMovies && upcomingMovies.map(movie => (
-                            <div key={movie.id} className="movie">
-                                <Link to={"/movie/" + movie.id}> 
-                                    <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
-                                    <div className="movie-info">
-                                      <h3>{movie.title}</h3>
-                                      <button>Watchlist</button>
-                                      <button>Favorite</button>
-                                    </div>
-                                </Link>
-                            </div>
+                          <MovieCard
+                            key={movie.id}
+                            movie={movie}
+                          />
                         ))}
                     </div>
                 </>
