@@ -18,7 +18,7 @@ export default function Home() {
           }
         })
         .then(data => {
-          console.log(data);
+          /* console.log(data); */
           setPopularMovies(data.results);
           setIsLoading(false);
         })
@@ -32,7 +32,7 @@ export default function Home() {
             }
           })
           .then(data => {
-            console.log(data);
+            /* console.log(data); */
             setTopRatedMovies(data.results);
             setIsLoading(false);
           })
@@ -46,7 +46,7 @@ export default function Home() {
             }
           })
           .then(data => {
-            console.log(data);
+            /* console.log(data); */
             setUpcomingMovies(data.results);
             setIsLoading(false);
           })

@@ -6,8 +6,9 @@ import Signup from './components/Signup/Signup.js';
 import Home from './components/Home/Home.js';
 import Watchlist from './components/Watchlist/Watchlist.js';
 import Profile from './components/Profile/Profile.js';
-import './App.css';
 import MovieItem from './components/MovieItem/MovieItem.js';
+import Logout from './components/Logout/Logout.js';
+import './App.css';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -35,7 +36,7 @@ export default function App() {
     <Router>
       <div className="App">
         <header>
-          <Navbar />
+          <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
         </header>
         <main>
           <Switch>
@@ -62,6 +63,10 @@ export default function App() {
             <Route
               path="/signup"
               component={Signup}
+            />
+            <Route
+              path="/logout"
+              render={() => <Logout setIsAuthenticated={setIsAuthenticated}/>}
             />
           </Switch>
         </main>

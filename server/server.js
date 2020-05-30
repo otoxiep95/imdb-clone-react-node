@@ -28,7 +28,7 @@ const session = require("express-session");
 app.use(
   session({
     secret: `secret-key`,
-    resave: true,
+    resave: false,
     saveUninitialized: true,
   })
 );
