@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import keys from '../../config/keys';
+import inception from '../../images/inception.png'
 import './Home.css';
 
 export default function Home() {
@@ -59,7 +60,21 @@ export default function Home() {
 
     return (
         <div className="Home">
-            <h1>Home</h1>
+          <div className="home-header" style={{ backgroundImage: `url(${inception})` }}>
+            <div className="inner-home-header">
+              <div>
+                <h1>Welcome.</h1>
+                <p>Explore movies now.</p>
+              </div>
+              <div>
+                <form>
+                  <input type="text" name="search" placeholder="search for a movie"/>
+                  <button>Search</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
             {! isLoading ? (
                 <>
                     <h2>Popular</h2>
@@ -67,9 +82,10 @@ export default function Home() {
                         {popularMovies && popularMovies.map(movie => (
                             <div key={movie.id} className="movie">
                                 <Link to={"/movie/" + movie.id}>  
-                                    <h3>{movie.title}</h3>
                                     <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
+                                    <h3>{movie.title}</h3>
                                     <button>Watchlist</button>
+                                    <button>Favorite</button>
                                 </Link>
                             </div>
                         ))}
@@ -80,9 +96,10 @@ export default function Home() {
                         {topRatedMovies && topRatedMovies.map(movie => (
                             <div key={movie.id} className="movie">
                                 <Link to={"/movie/" + movie.id}> 
-                                    <h3>{movie.title}</h3>
                                     <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
+                                    <h3>{movie.title}</h3>
                                     <button>Watchlist</button>
+                                    <button>Favorite</button>
                                 </Link>
                             </div>
                         ))}
@@ -93,9 +110,10 @@ export default function Home() {
                         {upcomingMovies && upcomingMovies.map(movie => (
                             <div key={movie.id} className="movie">
                                 <Link to={"/movie/" + movie.id}> 
-                                    <h3>{movie.title}</h3>
                                     <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
+                                    <h3>{movie.title}</h3>
                                     <button>Watchlist</button>
+                                    <button>Favorite</button>
                                 </Link>
                             </div>
                         ))}
