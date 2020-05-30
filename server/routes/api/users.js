@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
   if (req.session.user) {
     try {
       const user = await User.query()
-        .select("id", "usernamr", "email")
+        .select("id", "username", "email")
         .findById(req.session.user.id);
       return res.json(user);
     } catch (error) {
