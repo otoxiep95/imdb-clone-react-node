@@ -8,11 +8,13 @@ router.get("/isLiked/:movieId", async (req, res) => {
   movieId = req.params.movieId;
   if (req.session.user) {
     try {
-      const likedMovie = Like.query().where({
-        movie_id: movieId,
-        user_id: req.session.user.id,
-      });
-      if (likedMovie) {
+      const likedMovie = Like.query()
+        .where({
+          movie_id: movieId,
+          user_id: req.session.user.id,
+        })
+        .limit(1);
+      if (likedMovie[0]) {
         return res.status(200).send({ response: "Liked" });
       } else {
         return res.status(404).send({ response: "Not liked" });
@@ -47,21 +49,39 @@ router.get("/", async (req, res) => {
 });
 
 //post new like
-router.post("/:movieId", async (req, res) => {
-  const movieId = req.params.movieId;
-  if (req.session.user) {
-    try {
-      const newLike = await Like.query().insert({
-        movie_id: movieId,
-        user_id: req.session.user.id,
-      });
-    } catch (error) {
-      return res
-        .status(500)
-        .send({ response: "something went wrong in the database", error });
+router.post("/", async (req, res) => {
+  const { movie_id } = req.body;
+  //const movieId = req.params.movieId;
+  if (movie_id) {
+    if (req.session.user) {
+      try {
+        const isMovieLiked = await Like.query()
+          .where({
+            movie_id: movie_id,
+            user_id: req.session.user.id,
+          })
+          .limit(1);
+        if (!isMovieLiked[0]) {
+          const newLike = await Like.query().insert({
+            movie_id,
+            user_id: req.session.user.id,
+          });
+          return res.json(newWatchLink);
+        } else {
+          return res
+            .status(404)
+            .send({ response: "You already like this movie" });
+        }
+      } catch (error) {
+        return res
+          .status(500)
+          .send({ response: "something went wrong in the database", error });
+      }
+    } else {
+      return res.status(404).send({ response: "not logged in" });
     }
   } else {
-    return res.status(404).send({ response: "not logged in" });
+    return res.status(404).send({ response: "Missing fields" });
   }
 });
 

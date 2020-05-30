@@ -12,45 +12,73 @@ router.get("/isloggedin", async (req, res) => {
   if (!req.session.user) {
     return res.status(401).send({ response: "Not logged in" });
   }
-  return res.status(200).send({ user: req.session.user, response: "Authenticated" });
+  return res
+    .status(200)
+    .send({ user: req.session.user, response: "Authenticated" });
+});
+
+//get logged user information
+router.get("/", async (req, res) => {
+  if (req.session.user) {
+    try {
+      const user = await User.query()
+        .select("id", "usernamr", "email")
+        .findById(req.session.user.id);
+      return res.json(user);
+    } catch (error) {
+      return res
+        .status(500)
+        .send({ response: "something went wrong in the database" });
+    }
+  } else {
+    return res.status(404).send({ response: "Not logged in" });
+  }
 });
 
 router.post("/register", async (req, res, next) => {
   const { username, email, password, confirm_password } = req.body;
 
-  if(!username || !email || !password || !confirm_password){
+  if (!username || !email || !password || !confirm_password) {
     return res.status(400).send({ response: "missing fields" });
   }
 
   if (password && password.length < 8) {
-      return res.status(400).send({ response: "password does not fulfill the requirements" });
+    return res
+      .status(400)
+      .send({ response: "password does not fulfill the requirements" });
   }
 
-  if (password !== confirm_password ) {
-      return res.status(400).send({ response: "passwords do not match" });
+  if (password !== confirm_password) {
+    return res.status(400).send({ response: "passwords do not match" });
   }
 
   if (username && email) {
-      const userExists = await User.query()
-          .where('username', username)
-          .orWhere('email', email);
+    const userExists = await User.query()
+      .where("username", username)
+      .orWhere("email", email);
 
-          if(userExists.length) {
-              return res.status(400).send({ response: "username or email already exists" });
-          }
+    if (userExists.length) {
+      return res
+        .status(400)
+        .send({ response: "username or email already exists" });
+    }
   }
 
   bcrypt.hash(password, saltRounds, async (error, hashedPassword) => {
-      if(error) {
-        return res.status(500).send({ response: "error creating user" });
-      }
+    if (error) {
+      return res.status(500).send({ response: "error creating user" });
+    }
 
-      try {
-          const user = await User.query().insert({ username, email, password: hashedPassword });
-          return res.status(200).send({ user, response: "user created" });
-      } catch(err) {
-          next(err);
-      }
+    try {
+      const user = await User.query().insert({
+        username,
+        email,
+        password: hashedPassword,
+      });
+      return res.status(200).send({ user, response: "user created" });
+    } catch (err) {
+      next(err);
+    }
   });
 });
 
@@ -89,14 +117,13 @@ router.post("/login", async (req, res) => {
 
 //Logout
 router.get("/logout", async (req, res) => {
-
-  req.session.destroy(error => {
-    if(error) {
-        return res.status(500).send({ response: "unable to log out" });
+  req.session.destroy((error) => {
+    if (error) {
+      return res.status(500).send({ response: "unable to log out" });
     } else {
-        return res.status(200).send({ response: "successfully logged out" });
+      return res.status(200).send({ response: "successfully logged out" });
     }
-  })
+  });
   /* req.session.destroy((err) => {
     if (err) {
       return res.status(500).send({ response: "Unable to logout" });
@@ -104,8 +131,6 @@ router.get("/logout", async (req, res) => {
     return res.json({ message: "Successfuly logged out" });
   }); */
 });
-
-
 
 //delete user
 router.delete("/", async (req, res) => {
