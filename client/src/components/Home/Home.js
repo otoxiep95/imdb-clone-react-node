@@ -25,7 +25,7 @@ export default function Home() {
     }
 
     function fetchTopRatedMovies() {
-        fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${keys.apiKey}&language=en-US&page=1`)
+        fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${keys.apiKey}&language=en-US&page=1&region=US`)
           .then(res => {
             if (res.ok) {
               return res.json();
@@ -79,16 +79,18 @@ export default function Home() {
                 <>
                     <h2>Popular</h2>
                     <div className="movie-list popular">
-                        {popularMovies && popularMovies.map(movie => (
-                            <div key={movie.id} className="movie">
-                                <Link to={"/movie/" + movie.id}>  
-                                    <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
-                                    <h3>{movie.title}</h3>
-                                    <button>Watchlist</button>
-                                    <button>Favorite</button>
-                                </Link>
+                      {popularMovies && popularMovies.map(movie => (
+                        <div key={movie.id} className="movie">
+                          <Link to={"/movie/" + movie.id}>  
+                            <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
+                            <div className="movie-info">
+                              <h3>{movie.title}</h3>
+                              <button>Watchlist</button>
+                              <button>Favorite</button>
                             </div>
-                        ))}
+                          </Link>
+                        </div>
+                      ))}
                     </div>
 
                     <h2>Top rated</h2>
@@ -97,9 +99,11 @@ export default function Home() {
                             <div key={movie.id} className="movie">
                                 <Link to={"/movie/" + movie.id}> 
                                     <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
-                                    <h3>{movie.title}</h3>
-                                    <button>Watchlist</button>
-                                    <button>Favorite</button>
+                                    <div className="movie-info">
+                                      <h3>{movie.title}</h3>
+                                      <button>Watchlist</button>
+                                      <button>Favorite</button>
+                                    </div>
                                 </Link>
                             </div>
                         ))}
@@ -111,9 +115,11 @@ export default function Home() {
                             <div key={movie.id} className="movie">
                                 <Link to={"/movie/" + movie.id}> 
                                     <div className="poster-container" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.poster_path})` }}/>
-                                    <h3>{movie.title}</h3>
-                                    <button>Watchlist</button>
-                                    <button>Favorite</button>
+                                    <div className="movie-info">
+                                      <h3>{movie.title}</h3>
+                                      <button>Watchlist</button>
+                                      <button>Favorite</button>
+                                    </div>
                                 </Link>
                             </div>
                         ))}

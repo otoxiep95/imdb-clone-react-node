@@ -66,7 +66,7 @@ export default function MovieItem(props) {
                         <h2>Reviews</h2>
                     </div>
                     <div className="similar">
-                        <h2>Similar movies</h2>
+                        {similarMovies.length ? <h2>Similar movies</h2> : ''}
                         <div className="movie-list similar">
                             {similarMovies && similarMovies.map(movie => (
                                 <div key={movie.id} className="movie">
