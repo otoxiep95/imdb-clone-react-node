@@ -9,10 +9,12 @@ var saltRounds = bcrypt.genSaltSync(10);
 
 //check if user is logged in
 router.get("/isloggedin", async (req, res) => {
-  if (req.session.user) {
-    res.status(200).send({ user: req.session.user, response: "Authenticated" });
+  if (!req.session.user) {
+    return res.status(404).send({ response: "Not logged in" });
   } else {
-    res.status(404).send({ response: "Not logged in" });
+    return res
+      .status(200)
+      .send({ user: req.session.user, response: "Authenticated" });
   }
 });
 
@@ -102,6 +104,19 @@ router.get("/logout", async (req, res) => {
     }
     res.json({ message: "Successfuly logged out" });
   });
+});
+//delete user
+router.delete("/", async (req, res) => {
+  if (req.session.user) {
+    const deleteUser = await User.query().deleteById(req.session.user.id);
+    if (deleteUser) {
+      req.status(200).send({ response: "deleted user succcess" });
+    } else {
+      req.status(404).send({ response: "couldnt delele user" });
+    }
+  } else {
+    res.status(403).send({ response: "Not logged in" });
+  }
 });
 
 // Export to api.js
