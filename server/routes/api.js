@@ -9,6 +9,7 @@ const likeRoutes = require("./api/like");
 app.use("/users", usersRoutes);
 app.use("/review", reviewRoutes);
 app.use("/watch", watchLinkRoutes);
+app.use("/liked", likeRoutes);
 
 // Export the file to be used in server.js
 module.exports = app;

@@ -137,12 +137,12 @@ router.delete("/", async (req, res) => {
   if (req.session.user) {
     const deleteUser = await User.query().deleteById(req.session.user.id);
     if (deleteUser) {
-      req.status(200).send({ response: "deleted user succcess" });
+      return res.status(200).send({ response: "deleted user succcess" });
     } else {
-      req.status(404).send({ response: "couldnt delele user" });
+      return res.status(404).send({ response: "couldnt delele user" });
     }
   } else {
-    res.status(403).send({ response: "Not logged in" });
+    return res.status(403).send({ response: "Not logged in" });
   }
 });
 

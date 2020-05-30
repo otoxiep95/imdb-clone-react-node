@@ -5,7 +5,7 @@ const User = require("../../models/User.js");
 const WatchLink = require("../../models/WatchLink.js");
 
 router.get("/hasWatchLink/:movieId", async (req, res) => {
-  movieId = req.params.movieId;
+  const movieId = req.params.movieId;
   console.log(movieId);
   if (req.session.user) {
     try {
