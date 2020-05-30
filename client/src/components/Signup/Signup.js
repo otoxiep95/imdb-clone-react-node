@@ -10,7 +10,7 @@ export default function Signup() {
     const history = useHistory();
 
     function register() {
-        fetch("http://127.0.0.1:9090/api/users/register", {
+        fetch("http://localhost:9090/api/users/register", {
             method: "POST",
             credentials: "include",
             headers: {

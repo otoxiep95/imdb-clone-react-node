@@ -11,11 +11,8 @@ var saltRounds = bcrypt.genSaltSync(10);
 router.get("/isloggedin", async (req, res) => {
   if (!req.session.user) {
     return res.status(401).send({ response: "Not logged in" });
-  } else {
-    return res
-      .status(200)
-      .send({ user: req.session.user, response: "Authenticated" });
   }
+  return res.status(200).send({ user: req.session.user, response: "Authenticated" });
 });
 
 router.post("/register", async (req, res, next) => {
@@ -92,12 +89,20 @@ router.post("/login", async (req, res) => {
 
 //Logout
 router.get("/logout", async (req, res) => {
-  req.session.destroy((err) => {
+
+  req.session.destroy(error => {
+    if(error) {
+        return res.status(500).send({ response: "unable to log out" });
+    } else {
+        return res.status(200).send({ response: "successfully logged out" });
+    }
+  })
+  /* req.session.destroy((err) => {
     if (err) {
       return res.status(500).send({ response: "Unable to logout" });
     }
-    res.json({ message: "Successfuly logged out" });
-  });
+    return res.json({ message: "Successfuly logged out" });
+  }); */
 });
 
 

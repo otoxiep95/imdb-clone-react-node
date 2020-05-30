@@ -14,7 +14,7 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   function handleAuthentication() {
-    fetch("http://127.0.0.1:9090/api/users/isloggedin", {
+    fetch("http://localhost:9090/api/users/isloggedin", {
       credentials: "include",
       headers: {
         Accept: "application/json",
