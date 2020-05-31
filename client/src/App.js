@@ -10,6 +10,8 @@ import MovieItem from "./pages/MovieItem/MovieItem.js";
 import Logout from "./components/Logout/Logout.js";
 import "./App.css";
 import SearchResult from "./pages/SearchResult/SearchResult.js";
+import SendResetEmail from "./pages/SendResetEmail/SendResetEmail.js";
+import ResetPassword from "./pages/ResetPassword/ResetPassword.js";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -60,6 +62,14 @@ export default function App() {
               render={() => <Login setIsAuthenticated={setIsAuthenticated} />}
             />
             <Route path="/signup" component={Signup} />
+            <Route 
+              path="/forgotpassword" 
+              component={SendResetEmail} 
+            />
+            <Route 
+              path="/passwordreset/:id/:link" 
+              component={ResetPassword} 
+            />
             <Route
               path="/logout"
               render={() => <Logout setIsAuthenticated={setIsAuthenticated} />}

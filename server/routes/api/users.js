@@ -124,12 +124,6 @@ router.get("/logout", async (req, res) => {
       return res.status(200).send({ response: "successfully logged out" });
     }
   });
-  /* req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).send({ response: "Unable to logout" });
-    }
-    return res.json({ message: "Successfuly logged out" });
-  }); */
 });
 
 //delete user
@@ -152,6 +146,10 @@ router.post("/forgotpassword", async (req, res) => {
   const { email } = req.body;
   const user = await User.query().findOne({ email: email });
 
+  if(!email) {
+    res.status(400).send({ response: 'Missing fields' });
+  }
+
   if(!user) {
     res.status(404).send({ response: 'The email does not exist in the database' });
   } else {
@@ -173,7 +171,7 @@ router.post("/forgotpassword", async (req, res) => {
       from: mailerAuth.user,
       to: email,
       subject: "Password reset",
-      html: `<a href="http://localhost:3000/passwordreset?id=${user.id}&link=${recovery_link}">Click here to change your password.</a>`
+      html: `<a href="http://localhost:3000/passwordreset/${user.id}/${recovery_link}">Click here to change your password.</a>`
     }
 
     transporter.sendMail(mailOptions, function (error, info) {

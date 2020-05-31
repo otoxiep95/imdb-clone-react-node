@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Login.css';
 
 export default function Login(props) {
@@ -62,7 +63,9 @@ export default function Login(props) {
                     {error ? <p className="error">{error}</p> : ""}
                 </div>
                 <div>
-                    <p>Forgot your password? Reset it here</p>
+                    <p>Forgot your password? Reset it 
+                        <Link to="/forgotpassword"> here</Link>
+                    </p>
                 </div>
             </div>
         </div>
