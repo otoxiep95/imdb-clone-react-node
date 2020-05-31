@@ -1,19 +1,17 @@
-.Login {
+.Signup {
 }
 
-.loginSection {
+.signupSection {
     display: grid;
     justify-content: center;
     text-align: center;
 }
 
-.Login form {
+.Signup form {
     display: grid;
     padding: 20px;
 }
 
-.Login button {
+.Signup button {
     margin: 20px;
 }
-
-

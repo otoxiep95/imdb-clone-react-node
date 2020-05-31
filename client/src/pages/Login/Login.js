@@ -59,10 +59,10 @@ export default function Login(props) {
                     <button type="button" onClick={login}>Login</button>
                 </form>
                 <div>
-                    <p>Forgot your password? Reset it here</p>
+                    {error ? <p className="error">{error}</p> : ""}
                 </div>
                 <div>
-                    {error ? <p className="error">{error}</p> : ""}
+                    <p>Forgot your password? Reset it here</p>
                 </div>
             </div>
         </div>
