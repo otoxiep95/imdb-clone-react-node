@@ -1,10 +1,10 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
-//const nodemailer = require("nodemailer");
-const crypto = require("crypto");
 const router = express.Router();
+const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
 const User = require("../../models/User.js");
-//const mailerAuth = require("../../config/mail_config");
+const mailerAuth = require("../../config/mailer_config");
 var saltRounds = bcrypt.genSaltSync(10);
 
 //check if user is logged in
@@ -146,6 +146,91 @@ router.delete("/", async (req, res) => {
     return res.status(403).send({ response: "Not logged in" });
   }
 });
+
+// forgot password request
+router.post("/forgotpassword", async (req, res) => {
+  const { email } = req.body;
+  const user = await User.query().findOne({ email: email });
+
+  if(!user) {
+    res.status(404).send({ response: 'The email does not exist in the database' });
+  } else {
+    let recovery_link = crypto.randomBytes(16).toString("hex");
+    await User.query().patch({
+      recovery_link,
+      recovery_link_status: true
+    }).findById(user.id);
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: mailerAuth.user,
+        pass: mailerAuth.password
+      }
+    });
+
+    const mailOptions = {
+      from: mailerAuth.user,
+      to: email,
+      subject: "Password reset",
+      html: `<a href="http://localhost:3000/passwordreset?id=${user.id}&link=${recovery_link}">Click here to change your password.</a>`
+    }
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if(error) {
+        res.status(502).send({
+          response: "Email not sent",
+          error: error.message
+        })
+      } else {
+        return res.status(200).send({ response: "email sent" });
+      }
+    })
+  }
+})
+
+router.post("/passwordreset", async (req, res) => {
+  const { id, recoveryLink, newPassword, confirmNewPassword } = req.body;
+
+  if (id && recoveryLink) {
+    const user = await User.query().findById(id);
+    if(!user) {
+      return res.status(404).send({ response: "user does not exist" });
+    }
+
+    if(newPassword && confirmNewPassword) {
+      if (newPassword !== confirmNewPassword) {
+        return res.status(400).send({ response: "passwords do not match" });
+      }
+    } else {
+      return res.status(400).send({ response: "missing fields" });
+    }
+    if(recoveryLink !== user.recovery_link || user.recovery_link_status == 0) {
+      return res.status(400).send({ response: "Recovery token not valid" });
+    }
+
+    bcrypt.hash(newPassword, saltRounds, async(error, hashedPassword) => {
+      if (error) {
+        return res.status(500).send({ response: "Password could not be updated" });
+      }
+
+      try {
+        await User.query().update({
+          password: hashedPassword,
+          recovery_link_status: false
+        })
+
+        return res.send({ response: "Password successfully changed" });
+      } catch(error) {
+        return res.status(500).send({ response: "Something went wrong in the database" });
+      }
+
+    })
+  
+  } else {
+    return res.status(404).send({ response: "id or recovery link missing" });
+  } 
+})
 
 // Export to api.js
 module.exports = router;
