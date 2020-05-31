@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function MovieCard({
-  movie,
-  isWatchList,
-  watchLinkId,
-  handleRemove,
-}) {
+export default function MovieCard({ movie, isList, id, handleRemove }) {
   return (
     <div key={movie.id} className="movie">
       <Link to={"/movie/" + movie.id}>
@@ -19,9 +14,7 @@ export default function MovieCard({
       </Link>
       <div className="movie-info">
         <h3>{movie.title}</h3>
-        {isWatchList && (
-          <button onClick={() => handleRemove(watchLinkId)}>Remove</button>
-        )}
+        {isList && <button onClick={() => handleRemove(id)}>Remove</button>}
       </div>
     </div>
   );
