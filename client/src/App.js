@@ -46,7 +46,7 @@ export default function App() {
             />
             <Route
               path="/profile"
-              component={Profile}
+              render={() => <Profile setIsAuthenticated={setIsAuthenticated} />}
             />
             <Route
               path="/watchlist"
@@ -66,7 +66,7 @@ export default function App() {
             />
             <Route
               path="/logout"
-              render={() => <Logout setIsAuthenticated={setIsAuthenticated}/>}
+              render={() => <Logout setIsAuthenticated={setIsAuthenticated} />}
             />
           </Switch>
         </main>
