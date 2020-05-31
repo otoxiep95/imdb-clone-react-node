@@ -1,0 +1,22 @@
+.Login {
+}
+
+.loginSection {
+    display: grid;
+    justify-content: center;
+   /*  align-content: center; */
+   /*  width: 100%;
+    height: calc(100% - 38px);
+    row-gap: 20px; */
+}
+
+.Login form {
+    display: grid;
+    padding: 20px;
+}
+
+.Login button {
+    margin: 20px;
+}
+
+
