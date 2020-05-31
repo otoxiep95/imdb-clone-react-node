@@ -57,6 +57,8 @@ export default function MovieItem(props) {
       console.log(res);
       if (res.ok) {
         setIsInWatchList(true);
+      } else {
+        setIsInWatchList(false);
       }
     });
   }
@@ -73,6 +75,8 @@ export default function MovieItem(props) {
       console.log(res);
       if (res.ok) {
         setIsInFavorite(true);
+      } else {
+        setIsInFavorite(false);
       }
     });
   }
