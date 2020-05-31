@@ -1,64 +1,98 @@
-import React, { useEffect, useState } from 'react';
-import keys from '../../config/keys'
-import MovieCard from '../../components/MovieCard/MovieCard';
+import React, { useEffect, useState } from "react";
+import keys from "../../config/keys";
+import MovieCard from "../../components/MovieCard/MovieCard";
 
 export default function Watchlist() {
-    const [watchlistIds, setWatchlistIds] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [movies, setMovies] = useState([]);
-    const watchListedMovies = [];
+  const [watchlistIds, setWatchlistIds] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [movies, setMovies] = useState([]);
 
-    function getWatchlist() {
-        fetch('http://localhost:9090/api/watch/', {
-            headers: {
-                Accept: "application/json",
-                        "Content-Type": "application/json"
-            },
-            credentials: "include"
+  async function getWatchlist() {
+    await fetch("http://localhost:9090/api/watch/", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        setWatchlistIds(data);
+        //setIsLoading(false);
+
+        getWatchlistMovies(data);
+      });
+  }
+
+  function getWatchlistMovies(data) {
+    console.log(data);
+
+    data.forEach((watchElement) => {
+      const movieId = watchElement.movie_id;
+      console.log(watchElement);
+      fetch(
+        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${keys.apiKey}&language=en-US`
+      )
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
         })
-        .then(res => {
-            console.log(res)
-            if (res.ok) {
-                return res.json();
-            }
-        })
-        .then(data => {
-            console.log(data)
-            setWatchlistIds(data);
-            setIsLoading(false);
-        })
-    }
-    {!isLoading && watchlistIds.forEach(id => {
-        const movieId = id.movie_id;
-        fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${keys.apiKey}&language=en-US`)
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-        })
-        .then(data => {
-            watchListedMovies.push(data);
+        .then((data) => {
+          console.log(data);
+          //watchListedMovies.push(data);
+          const watchMovie = { movieData: data, watchLinkId: watchElement.id };
+          setMovies((movies) => movies.concat(watchMovie));
+          console.log(movies);
+        });
+    });
+  }
 
-            /* watchListedMovies.push(data);
-            setMovies(watchListedMovies);
-            console.log(movies) */
-        })
-    })}
-    
-    
-    function getWatchlistMovies() {
-        console.log("hi")
-    }
+  useEffect(() => {
+    getWatchlist();
+  }, []);
 
-    useEffect(() => {
-        getWatchlist();
-        getWatchlistMovies();
-    }, []);
+  async function handleRemove(id) {
+    console.log("delete:" + id);
+    await fetch("http://localhost:9090/api/watch/" + id, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }).then((res) => {
+      if (res.ok) {
+        const index = movies.findIndex((movie) => movie.watchLinkId === id);
+        const newMovies = [...movies];
+        newMovies.splice(index, 1);
+        setMovies(newMovies);
+      }
+    });
+  }
+  //console.log(watchListedMovies);
 
-    console.log(watchListedMovies)
-
-    return (
-        <h1>Watchlist</h1>
-
-    )
+  return (
+    <div>
+      <h1>Watchlist</h1>
+      <div className="watch-list">
+        {movies &&
+          movies.map((movie) => (
+            <MovieCard
+              key={movie.movieData.id}
+              movie={movie.movieData}
+              watchLinkId={movie.watchLinkId}
+              isWatchList={true}
+              handleRemove={handleRemove}
+            />
+          ))}
+      </div>
+    </div>
+  );
 }
