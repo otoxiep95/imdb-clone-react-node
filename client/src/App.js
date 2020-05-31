@@ -52,7 +52,9 @@ export default function App() {
             <Route path="/watchlist" component={Watchlist} />
             <Route
               path="/movie/:id"
-              render={(props) => <MovieItem {...props} />}
+              render={(props) => (
+                <MovieItem {...props} isAuthenticated={isAuthenticated} />
+              )}
             />
             <Route path="/search/:query" component={SearchResult} />
             <Route

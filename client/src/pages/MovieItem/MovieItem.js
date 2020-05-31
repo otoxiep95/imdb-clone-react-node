@@ -2,14 +2,19 @@ import React, { useState, useEffect } from "react";
 import keys from "../../config/keys";
 import "./MovieItem.css";
 import MovieCard from "../../components/MovieCard/MovieCard";
-import noPoster from "../../images/no-poster.png"
+import noPoster from "../../images/no-poster.png";
+import ReviewForm from "../../components/Review/ReviewForm";
+import ReviewCard from "../../components/Review/ReviewCard";
 
 export default function MovieItem(props) {
+  const { isAuthenticated } = props;
   const [movie, setMovie] = useState();
   const [similarMovies, setSimilarMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isInWatchList, setIsInWatchList] = useState(false);
   const [isInFavorite, setIsInFavorite] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [userReview, setUserReview] = useState({});
 
   function fetchMovieById() {
     const movieId = props.match.params.id;
@@ -25,7 +30,6 @@ export default function MovieItem(props) {
         data.year = Number(data.release_date.split("-", 1)[0]);
         setMovie(data);
         setIsLoading(false);
-        console.log(data);
       });
   }
 
@@ -40,7 +44,6 @@ export default function MovieItem(props) {
         }
       })
       .then((data) => {
-        console.log(data);
         setSimilarMovies(data.results);
       });
   }
@@ -54,7 +57,6 @@ export default function MovieItem(props) {
       },
       credentials: "include",
     }).then((res) => {
-      console.log(res);
       if (res.ok) {
         setIsInWatchList(true);
       } else {
@@ -72,7 +74,6 @@ export default function MovieItem(props) {
       },
       credentials: "include",
     }).then((res) => {
-      console.log(res);
       if (res.ok) {
         setIsInFavorite(true);
       } else {
@@ -94,7 +95,6 @@ export default function MovieItem(props) {
         movie_id: movieId,
       }),
     }).then((res) => {
-      console.log(res);
       if (res.ok) {
         setIsInWatchList(true);
       }
@@ -114,18 +114,40 @@ export default function MovieItem(props) {
         movie_id: movieId,
       }),
     }).then((res) => {
-      console.log(res);
       if (res.ok) {
         setIsInFavorite(true);
       }
     });
   }
 
+  function getAllReviews() {
+    const movieId = props.match.params.id;
+    fetch("http://localhost:9090/api/review/" + movieId, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        setReviews(data);
+      });
+  }
+
+  function postReview() {}
+
   useEffect(() => {
     fetchMovieById();
     fetchSimilarMovies();
     handleIsInWatchList();
     handleIsInFavorites();
+    getAllReviews();
+    //handleUserHasReview();
   }, [props.location]);
 
   return (
@@ -141,9 +163,11 @@ export default function MovieItem(props) {
             <div className="inner-movie-header">
               <div className="poster">
                 {movie.poster_path ? (
-                  <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
-                ):(
-                  <img src={noPoster}/>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                  />
+                ) : (
+                  <img src={noPoster} />
                 )}
               </div>
               <div>
@@ -180,7 +204,18 @@ export default function MovieItem(props) {
             </div>
           </div>
           <div className="reviews">
+            {isAuthenticated && (
+              <>
+                <h2>Post Review</h2>
+                <ReviewForm movieId={movie.id} />
+              </>
+            )}
+
             <h2>Reviews</h2>
+            {reviews &&
+              reviews.map((review) => (
+                <ReviewCard key={review.id} review={review} />
+              ))}
           </div>
           <div className="similar">
             {similarMovies.length ? <h2>Similar movies</h2> : ""}

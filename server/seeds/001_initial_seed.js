@@ -39,12 +39,14 @@ exports.seed = function (knex) {
         {
           user_id: 1, //-> Alberto
           title: "Amazing",
+          rating: 5,
           content: "Cried like a baby, couldnt hold my tears back",
           movie_id: 67,
         },
         {
           user_id: 2, //-> Alberto
           title: "Meh",
+          rating: 2,
           content: "Such a dumb movie",
           movie_id: 67,
         },
