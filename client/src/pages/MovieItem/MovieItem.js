@@ -61,10 +61,67 @@ export default function MovieItem(props) {
     });
   }
 
+  function handleIsInFavorites() {
+    const movieId = props.match.params.id;
+    fetch("http://localhost:9090/api/watch/isLiked/" + movieId, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }).then((res) => {
+      console.log(res);
+      if (res.ok) {
+        setIsInFavorite(true);
+      }
+    });
+  }
+
+  function addToWatchList() {
+    const movieId = props.match.params.id;
+    fetch("http://localhost:9090/api/watch/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        movie_id: movieId,
+      }),
+    }).then((res) => {
+      console.log(res);
+      if (res.ok) {
+        setIsInWatchList(true);
+      }
+    });
+  }
+
+  function addToFavorites() {
+    const movieId = props.match.params.id;
+    fetch("http://localhost:9090/api/liked/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        movie_id: movieId,
+      }),
+    }).then((res) => {
+      console.log(res);
+      if (res.ok) {
+        setIsInFavorite(true);
+      }
+    });
+  }
+
   useEffect(() => {
     fetchMovieById();
     fetchSimilarMovies();
     handleIsInWatchList();
+    handleIsInFavorites();
   }, []);
 
   return (
@@ -93,7 +150,17 @@ export default function MovieItem(props) {
                 {isInWatchList ? (
                   <div>Already in watchlist</div>
                 ) : (
-                  <button>Watchlist</button>
+                  <button type="button" onClick={addToWatchList}>
+                    Watchlist
+                  </button>
+                )}
+
+                {isInFavorite ? (
+                  <div>Already in favorites</div>
+                ) : (
+                  <button type="button" onClick={addToFavorites}>
+                    Like
+                  </button>
                 )}
 
                 <p>{movie.release_date} (US)</p>
@@ -116,7 +183,13 @@ export default function MovieItem(props) {
             <div className="movie-list similar">
               {similarMovies &&
                 similarMovies.map((movie) => (
-                  <MovieCard key={movie.id} movie={movie} />
+                  <MovieCard
+                    key={movie.id}
+                    movie={movie}
+                    id={""}
+                    isList={false}
+                    handleRemove={false}
+                  />
                 ))}
             </div>
           </div>

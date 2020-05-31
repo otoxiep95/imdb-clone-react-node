@@ -87,8 +87,8 @@ export default function Watchlist() {
             <MovieCard
               key={movie.movieData.id}
               movie={movie.movieData}
-              watchLinkId={movie.watchLinkId}
-              isWatchList={true}
+              id={movie.watchLinkId}
+              isList={true}
               handleRemove={handleRemove}
             />
           ))}
