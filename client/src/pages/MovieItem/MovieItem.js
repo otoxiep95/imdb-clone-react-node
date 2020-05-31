@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import keys from "../../config/keys";
 import "./MovieItem.css";
 import MovieCard from "../../components/MovieCard/MovieCard";
+import noPoster from "../../images/no-poster.png"
 
 export default function MovieItem(props) {
   const [movie, setMovie] = useState();
@@ -78,9 +79,11 @@ export default function MovieItem(props) {
           >
             <div className="inner-movie-header">
               <div className="poster">
-                <img
-                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                />
+                {movie.poster_path ? (
+                  <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
+                ):(
+                  <img src={noPoster}/>
+                )}
               </div>
               <div>
                 <h1>

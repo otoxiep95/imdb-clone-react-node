@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from 'react-router-dom';
 import keys from "../../config/keys";
 import inception from "../../images/inception.png";
 import "./Home.css";
@@ -8,7 +9,11 @@ export default function Home() {
   const [popularMovies, setPopularMovies] = useState([]);
   const [topRatedMovies, setTopRatedMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
+  const [query, setQuery] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+
+  const history = useHistory();
 
   function fetchPopularMovies() {
     fetch(
@@ -58,6 +63,14 @@ export default function Home() {
       });
   }
 
+  function handleSearch() {
+    if (!query) {
+      setError('you need to enter a value')
+    } else {
+      history.push("/search/" + query);
+    }
+  }
+
   useEffect(() => {
     fetchPopularMovies();
     fetchTopRatedMovies();
@@ -81,8 +94,10 @@ export default function Home() {
                 type="text"
                 name="search"
                 placeholder="search for a movie"
+                onChange={e => setQuery(e.target.value)}
               />
-              <button>Search</button>
+              {error ? <p>{error}</p> : ''}
+              <button type="button" onClick={handleSearch}>Search</button>
             </form>
           </div>
         </div>

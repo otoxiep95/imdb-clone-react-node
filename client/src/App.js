@@ -9,6 +9,7 @@ import Profile from './pages/Profile/Profile.js';
 import MovieItem from './pages/MovieItem/MovieItem.js';
 import Logout from './components/Logout/Logout.js';
 import './App.css';
+import SearchResult from './pages/SearchResult/SearchResult.js';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -55,6 +56,10 @@ export default function App() {
             <Route
               path="/movie/:id"
               component={MovieItem}
+            />
+             <Route
+              path="/search/:query"
+              component={SearchResult}
             />
             <Route
               path="/login"
