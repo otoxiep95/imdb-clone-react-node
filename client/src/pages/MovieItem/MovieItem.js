@@ -122,7 +122,7 @@ export default function MovieItem(props) {
     fetchSimilarMovies();
     handleIsInWatchList();
     handleIsInFavorites();
-  }, []);
+  }, [props.location]);
 
   return (
     <div className="MovieItem">
