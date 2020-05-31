@@ -1,111 +1,144 @@
 const express = require("express");
-
 const router = express.Router();
-const User = require("../../models/User.js");
 const Review = require("../../models/Review.js");
 
-//get all reviews for movie
+//get all reviews for movie //TESTED
 router.get("/:movieId/", async (req, res) => {
-  movieId = req.params.movieId;
-  const movieReviews = Review.query().where("movie_id", movieId);
-  res.json(movieReviews);
+  const movieId = req.params.movieId;
+  const movieReviews = await Review.query().where("movie_id", movieId);
+
+  return res.json(movieReviews);
 });
-//get all reviews from user
+
+
+//get all reviews from user //TESTED
 router.get("/", async (req, res)=>{
-  if(req.session.user){
+  if (!req.session.user) {
+    return res.status(403).send({ response: 'you need to log in' });
+  }
 
-  }else{
+  const { id } = req.session.user;
+  const reviews = await Review.query().where({ user_id: id });
+  return res.json(reviews);
 
+})
+
+//check if user has review //TESTED
+router.get("/hasreview/:movieId/", async (req, res) => {
+  const movieId = req.params.movieId;
+
+  if (!req.session.user) {
+    return res.status(403).send({ response: 'you need to log in' });
+  }
+
+  if (movieId) {
+    const hasReview = await Review.query().where({
+      user_id: req.session.user.id,
+      movie_id: movieId
+    }).limit(1);
+    
+    if (!hasReview[0]) {
+      return res.status(404).send({ response: "No review yet" });
+    } else {
+      return res.send({ response: "User has review" })
+    }
+  } else {
+    return res.status(404).send({ response: "No movie id" })
+  }
+});
+
+//post new review //TESTED
+router.post("/", async (req, res) => {
+  const { title, rating, content, movie_id } = req.body;
+
+  if (!req.session.user) {
+    return res.status(403).send({ response: 'you need to log in' });
+  }
+
+  if(movie_id) {
+    if(!title || !rating || !content ) {
+      return res.status(400).send({ response: "Missing fields" });
+    }
+
+    if(title.length > 100 || content.length > 280) {
+      return res.status(400).send({ response: "Title or review are too long" });
+    }
+
+    try {
+      const existingReview = await Review.query().where({
+        user_id: req.session.user.id,
+        movie_id: movie_id,
+      }).limit(1);
+
+      if (!existingReview[0]) {
+        const newReview = await Review.query().insert({
+          rating,
+          title,
+          content,
+          user_id: req.session.user.id,
+          movie_id,
+        });
+
+        return res.send({response: "Review posted", review: newReview})
+      } else {
+          return res.status(404).send({ response: "You already have a review for this movie" });
+      }
+    } catch (error) {
+        return res
+          .status(500)
+          .send({ response: "Something went wrong with the database" });
+    }
+  } else {
+      res.status(404).send({ response: "No movie id" });
+  }
+});
+
+
+//Update review 
+router.patch("/:id", async(req, res) => {
+  const id = req.params.id;
+  const { rating, title, content } = req.body;
+
+  if (!req.session.user) {
+    return res.status(403).send({ response: 'you need to log in' });
+  }
+
+  if (!rating || !title || !content) {
+    return res.status(400).send({ response: 'missing fields' });
+  }
+
+
+  try {
+    const existingReview = await Review.query().where({ id }).limit(1);
+    if (!existingReview[0]) {
+      return res.status(404).send({ response: "review with this id does not exist" })
+    } else {
+      const review = await Review.query().findById(id).patch({
+        id,
+        rating,
+        title,
+        content
+      })
+      return res.json(review);
+    }
+  } catch(error) {
+    return res.status(500).send({ response: "could not update review" })
   }
 })
 
-router.get("/userhasreview/:movieId/", async (req, res) => {
-  movieId = req.params.movieId;
-  if(req.session.user){
-     const hasReview = await Review.query().where({
-    user_id: req.session.user.id,
-    movie_id: movie_id,
-  });
-  if (!hasReview) {
-    res.status(200).send({ response: "No review yet" });
-  } else {
-    res.status(400).send({ response: "Already has review" });
-  }
-  }else{
-    
-  }
- 
-});
-
-//post new review
-router.post("/", async (req, res) => {
-  const { title, rating, content, movie_id } = req.body;
-  if (title && rating && content && movie_id) {
-    //validation?
-    if (title.length > 100 || content.length > 280) {
-      res.status(400).send({ response: "Title or review are too long" });
-    } else {
-      try {
-        const existingReview = await Review.query().where({
-          user_id: req.session.user.id,
-          movie_id: movie_id,
-        });
-        if (!existingReview) {
-          const newReview = await Review.query().insert({
-            rating,
-            title,
-            content,
-            user_id: req.session.user.id,
-            movie_id,
-          });
-        } else {
-          res.status(404).send({ response: "You already have a review" });
-        }
-      } catch (error) {
-        res
-          .status(500)
-          .send({ response: "Something went wrong with the database" });
-      }
-    }
-  } else {
-    res.status(404).send({ response: "Missing fields" });
-  }
-});
-
-router.patch("/:id", async (req, res) => {
-  reviewId = req.params.id;
-  const { title, rating, content } = req.body;
-  if (req.session.user) {
-    //check if review belongs to user
-    const userReview = Review.query().where({
-      id: reviewId,
-      user_id: req.session.user.id,
-    });
-    if (userReview) {
-      await userReview.$query().patch({
-        title,
-        rating,
-        content,
-      });
-    } else {
-      res.status(404).send({ response: "couldnt find review" });
-    }
-  } else {
-    res.status(404).send({ response: "not logged in" });
-  }
-});
-
+//delete review //TESTED, you can delete reviews that dont exist
 router.delete("/:id", async (req, res) => {
-  reviewId = req.params.id;
-  if (req.session.user) {
-    try {
-      await Review.query().deleteById(reviewId);
-      res.status(200).send({ response: "deleted review succcess" });
-    } catch (error) {
-      res.status(500).send({ response: "couldnt delele user" });
-    }
-  } else {
-    res.status(403).send({ response: "Not logged in" });
+  const reviewId = req.params.id;
+  
+  if (!req.session.user) {
+    return res.status(403).send({ response: 'you need to log in' });
+  }
+
+  try {
+    const reviewToDelete = await Review.query().deleteById(reviewId);
+    return res.send({ response: "successfully deleted review", review: reviewToDelete })
+  } catch(error) {
+    return res.status(500).send({ response: "review could not be deleted" })
   }
 });
 // Export to api.js
