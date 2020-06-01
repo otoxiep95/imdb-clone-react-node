@@ -31,7 +31,13 @@ a {
   font-size: 18px;
 }
 
+
+.loading {
+  display: grid;
+  margin-top: 100px;
+}
 .loader {
   grid-column: 1/-1;
   justify-self: center;
+  align-self: center;
 }

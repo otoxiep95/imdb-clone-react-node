@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import keys from "../../config/keys";
+import { useHistory } from 'react-router-dom';
 import "./MovieItem.css";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import noPoster from "../../images/no-poster.png";
@@ -7,7 +7,7 @@ import Review from "../../components/Review/Review";
 import { SyncLoader } from "react-spinners";
 
 export default function MovieItem(props) {
-  const { isAuthenticated } = props;
+  const { isAuthenticated, keys } = props;
   const [movie, setMovie] = useState();
   const [similarMovies, setSimilarMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -15,6 +15,8 @@ export default function MovieItem(props) {
   const [isInFavorite, setIsInFavorite] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [userReview, setUserReview] = useState({});
+
+  const history = useHistory();
 
   function fetchMovieById() {
     const movieId = props.match.params.id;
@@ -24,17 +26,21 @@ export default function MovieItem(props) {
       .then((res) => {
         if (res.ok) {
           return res.json();
+        } else {
+          return history.push("/");
         }
       })
       .then((data) => {
-        data.year = Number(data.release_date.split("-", 1)[0]);
-        setMovie(data);
-        setIsLoading(false);
+        if(data) {
+          data.year = Number(data.release_date.split("-", 1)[0]);
+          setMovie(data);
+          fetchSimilarMovies(movieId);
+          setIsLoading(false);
+        }
       });
   }
 
-  function fetchSimilarMovies() {
-    const movieId = props.match.params.id;
+  function fetchSimilarMovies(movieId) {
     fetch(
       `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${keys.apiKey}&language=en-US&page=1`
     )
@@ -139,11 +145,10 @@ export default function MovieItem(props) {
       });
   }
 
-  function postReview() {}
 
   useEffect(() => {
     fetchMovieById();
-    fetchSimilarMovies();
+    /* fetchSimilarMovies(); */
     handleIsInWatchList();
     handleIsInFavorites();
     getAllReviews();

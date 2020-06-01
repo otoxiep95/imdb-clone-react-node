@@ -8,10 +8,11 @@ import Watchlist from "./pages/Watchlist/Watchlist.js";
 import Profile from "./pages/Profile/Profile.js";
 import MovieItem from "./pages/MovieItem/MovieItem.js";
 import Logout from "./components/Logout/Logout.js";
-import "./App.css";
 import SearchResult from "./pages/SearchResult/SearchResult.js";
 import SendResetEmail from "./pages/SendResetEmail/SendResetEmail.js";
 import ResetPassword from "./pages/ResetPassword/ResetPassword.js";
+import keys from "../src/config/keys";
+import "./App.css";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -55,7 +56,7 @@ export default function App() {
             <Route
               path="/movie/:id"
               render={(props) => (
-                <MovieItem {...props} isAuthenticated={isAuthenticated} />
+                <MovieItem {...props} keys={keys} isAuthenticated={isAuthenticated} />
               )}
             />
             <Route path="/search/:query" component={SearchResult} />

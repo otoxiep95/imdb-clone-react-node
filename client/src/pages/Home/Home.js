@@ -4,6 +4,7 @@ import keys from "../../config/keys";
 import inception from "../../images/inception.png";
 import "./Home.css";
 import MovieCard from "../../components/MovieCard/MovieCard";
+import { SyncLoader } from "react-spinners";
 
 export default function Home() {
   const [popularMovies, setPopularMovies] = useState([]);
@@ -130,7 +131,11 @@ export default function Home() {
           </div>
         </>
       ) : (
-        <p>Loading movies...</p>
+        <div className="loading">
+          <div className="loader">
+            <SyncLoader className="loader" color={"#6a5acd"}/>
+          </div>
+        </div>
       )}
     </div>
   );
