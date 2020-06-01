@@ -11,7 +11,7 @@ export default function Navbar(props) {
     } = props;
 
     return (
-        <div className="Navbar">
+        <div className={isAuthenticated ? "Navbar auth" : "Navbar"}>
             <nav>
                 <ul>
                     <li>
