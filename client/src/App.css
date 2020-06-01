@@ -16,3 +16,12 @@ a {
   text-decoration: none;
   color: black;
 }
+
+.error {
+  margin-top: 10px;
+  color: white;
+}
+
+.inner-home-header .error {
+  font-size: 18px;
+}

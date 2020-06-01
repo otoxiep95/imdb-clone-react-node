@@ -1,3 +1,7 @@
+.MovieItem h2 {
+    margin-left: 20px;
+}
+
 .movie-header {
     background-size: cover;
     background-repeat: no-repeat;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import MovieCard from "../../components/MovieCard/MovieCard";
 import keys from "../../config/keys";
+import "./SearchResult.css";
 
 export default function SearchResult(props) {
     const [movieResults, setMovieResults] = useState([]);
@@ -29,10 +30,14 @@ export default function SearchResult(props) {
         <div className="SearchResult">
             <h1>Results for "{query}"</h1>
             {!isLoading ? (
-                <div className="movie-list similar">
+                <div className="search-list">
                 {movieResults &&
                   movieResults.map((movie) => (
-                    <MovieCard key={movie.id} movie={movie} />
+                    <MovieCard 
+                        key={movie.id} 
+                        movie={movie}
+                        search={true} 
+                    />
                   ))}
               </div>
             ):(

@@ -175,23 +175,25 @@ export default function MovieItem(props) {
                 <h1>
                   {movie.title} ({movie.year})
                 </h1>
+                {isAuthenticated &&
+                  <>
+                    {isInWatchList ? (
+                      <div>Already in watchlist</div>
+                    ) : (
+                      <button type="button" onClick={addToWatchList}>
+                        Watchlist
+                      </button>
+                    )}
 
-                {isInWatchList ? (
-                  <div>Already in watchlist</div>
-                ) : (
-                  <button type="button" onClick={addToWatchList}>
-                    Watchlist
-                  </button>
-                )}
-
-                {isInFavorite ? (
-                  <div>Already in favorites</div>
-                ) : (
-                  <button type="button" onClick={addToFavorites}>
-                    Like
-                  </button>
-                )}
-
+                    {isInFavorite ? (
+                      <div>Already in favorites</div>
+                    ) : (
+                      <button type="button" onClick={addToFavorites}>
+                        Like
+                      </button>
+                    )}
+                  </>
+                }
                 <p>{movie.release_date} (US)</p>
                 {movie.genres.map(function (genre, index) {
                   return (

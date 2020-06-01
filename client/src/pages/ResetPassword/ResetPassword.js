@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import "./ResetPassword.css"
 
 export default function ResetPassword(props) {
     console.log(props)
@@ -46,22 +47,26 @@ export default function ResetPassword(props) {
     
     return (
         <div className="ResetPassword">
-            <h1>Reset password</h1>
-            <form>
-                <input
-                    type="password"
-                    placeholder="New password"
-                    onChange={(e) => setNewPassword(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="Confirm new password"
-                    onChange={(e) => setConfirmNewPassword(e.target.value)}
-                />
-                <button type="button" onClick={handlePasswordReset}>Update password</button>
-            </form>
-            {successMessage ? <p className="error">{successMessage}</p> : ""}
-            {error && !successMessage ? <p className="error">{error}</p> : ""}
+            <div className="loginSection">
+                <h1>Reset password</h1>
+                <div className="container">
+                    <form>
+                        <input
+                            type="password"
+                            placeholder="New password"
+                            onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                        <input
+                            type="password"
+                            placeholder="Confirm new password"
+                            onChange={(e) => setConfirmNewPassword(e.target.value)}
+                        />
+                        <button type="button" onClick={handlePasswordReset}>Update password</button>
+                    </form>
+                </div>   
+                {successMessage ? <p className="error">{successMessage}</p> : ""}
+                {error && !successMessage ? <p className="error">{error}</p> : ""}
+            </div>
         </div>
     )
 }

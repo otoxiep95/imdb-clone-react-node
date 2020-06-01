@@ -44,29 +44,29 @@ export default function Login(props) {
         <div className="Login">
             <div className="loginSection">
                 <h1>Log in</h1>
-                <form className="LoginForm">
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="username"
-                        onChange={e => setUsername(e.target.value)}
-                    />
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="password"
-                        onChange={e => setPassword(e.target.value)}
-                    />
-                    <button type="button" onClick={login}>Login</button>
-                </form>
-                <div>
+                <div className="container">
+                    <form className="LoginForm">
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="username"
+                            onChange={e => setUsername(e.target.value)}
+                        />
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="password"
+                            onChange={e => setPassword(e.target.value)}
+                        />
+                        <button type="button" onClick={login}>Login</button>
+                    </form>
+                    <div className="forgot">
+                        <p>Forgot your password? Reset it 
+                            <Link to="/forgotpassword"> <span>here</span></Link>
+                        </p>
+                    </div>
+                </div>
                     {error ? <p className="error">{error}</p> : ""}
-                </div>
-                <div>
-                    <p>Forgot your password? Reset it 
-                        <Link to="/forgotpassword"> here</Link>
-                    </p>
-                </div>
             </div>
         </div>
     )

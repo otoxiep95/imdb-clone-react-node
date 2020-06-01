@@ -96,7 +96,7 @@ export default function Home() {
                 placeholder="search for a movie"
                 onChange={e => setQuery(e.target.value)}
               />
-              {error ? <p>{error}</p> : ''}
+              {error ? <p className="error">{error}</p> : ''}
               <button type="button" onClick={handleSearch}>Search</button>
             </form>
           </div>

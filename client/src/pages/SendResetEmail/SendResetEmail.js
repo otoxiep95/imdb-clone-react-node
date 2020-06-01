@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "./SendResetEmail.css"
 
 
 export default function SendResetEmail() {
@@ -35,18 +36,22 @@ export default function SendResetEmail() {
 
     return (
         <div className="SendResetEmail">
-            <h1>Reset password</h1>
-            <form>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <button type="button" onClick={handleSendResetEmail}>Reset password</button>
-            </form>
-            {successMessage ? <p className="error">{successMessage}</p> : ""}
-            {error && !successMessage ? <p className="error">{error}</p> : ""}
+            <div className="loginSection">
+                <h1>Reset password</h1>
+                <div className="container">
+                    <form>
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <button type="button" onClick={handleSendResetEmail}>Reset password</button>
+                    </form>
+                </div>   
+                {successMessage ? <p className="error">{successMessage}</p> : ""}
+                {error && !successMessage ? <p className="error">{error}</p> : ""}
+            </div>
         </div>
     )
 }
