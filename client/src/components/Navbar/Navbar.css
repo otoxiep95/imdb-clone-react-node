@@ -11,8 +11,6 @@
     grid-template-columns: repeat(5, 1fr);
 }
 
-
-
 .Navbar li {
     display: inline;
     padding: 10px;
