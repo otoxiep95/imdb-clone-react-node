@@ -1,0 +1,39 @@
+.watch-list {
+    background: linear-gradient(to right, rgb(99, 164, 195) 150px, rgba(58, 42, 146, 0.7) 100%);
+    background-repeat: repeat space;
+    background-repeat: repeat repeat;
+    background-repeat: round space;
+    height: 100%;
+
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.watch-list-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 20px;
+    justify-content: center;
+    text-align: center;
+}
+
+.watch-list button {
+        margin: 20px;
+        outline: none;
+        font-size: 1em;
+        border-radius: 20px; 
+        background: rgba(255,255,255, 1);
+        color: rgb(99, 164, 195);
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+}
+
+.watch-list h1 {
+    font-weight: 100;
+    color: white;
+    padding-top: 10px;
+    margin-bottom: 10px;
+}

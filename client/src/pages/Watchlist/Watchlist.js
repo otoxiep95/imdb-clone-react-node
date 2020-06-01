@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import keys from "../../config/keys";
 import MovieCard from "../../components/MovieCard/MovieCard";
+import './Watchlist.css';
 
 export default function Watchlist() {
   const [watchlistIds, setWatchlistIds] = useState([]);
@@ -80,18 +81,20 @@ export default function Watchlist() {
 
   return (
     <div>
-      <h1>Watchlist</h1>
       <div className="watch-list">
-        {movies &&
-          movies.map((movie) => (
-            <MovieCard
-              key={movie.movieData.id}
-              movie={movie.movieData}
-              id={movie.watchLinkId}
-              isList={true}
-              handleRemove={handleRemove}
-            />
-          ))}
+        <h1>Watchlist</h1>
+        <div className="watch-list-section">
+          {movies &&
+            movies.map((movie) => (
+              <MovieCard
+                key={movie.movieData.id}
+                movie={movie.movieData}
+                id={movie.watchLinkId}
+                isList={true}
+                handleRemove={handleRemove}
+              />
+            ))}
+        </div>
       </div>
     </div>
   );

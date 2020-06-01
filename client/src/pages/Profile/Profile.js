@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import keys from "../../config/keys";
 import { useHistory } from "react-router-dom";
 import MovieCard from "../../components/MovieCard/MovieCard";
+import './Profile.css';
 
 export default function Profile(props) {
   const [username, setUsername] = useState("");
@@ -125,11 +126,14 @@ export default function Profile(props) {
     <div className="profile-container">
       {!isLoading ? (
         <>
-          <h1>Name: {username}</h1>
-          <h1>Email: {email}</h1>
-          <button type="button" onClick={deleteUser}>
-            Delete user
+          <div class="profile-details">
+            <h1>Profile</h1>
+            <h1>Name: {username}</h1>
+            <h1>Email: {email}</h1>
+            <button type="button" class="delete-button" onClick={deleteUser}>
+              Delete user
           </button>
+          </div>
           <h1>Favorites</h1>
           <div className="favorite-list">
             {movies &&
@@ -145,8 +149,8 @@ export default function Profile(props) {
           </div>
         </>
       ) : (
-        <p>Loading movies...</p>
-      )}
+          <p>Loading movies...</p>
+        )}
     </div>
   );
 }
