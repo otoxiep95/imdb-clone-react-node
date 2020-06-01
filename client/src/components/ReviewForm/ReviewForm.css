@@ -1,0 +1,153 @@
+.ReviewForm {
+    margin: 20px;
+    width: 450px;
+}
+
+.ReviewForm form {
+    display: grid;
+}
+
+.ReviewForm label {
+    margin-left: 20px;
+    color: slateblue;
+    font-weight: 600;
+}
+
+.ReviewForm button {
+    margin: 20px;
+    outline: none;
+    font-size: 1em;
+    border-radius: 20px; 
+    color: rgba(255,255,255, 1);
+    background: rgb(99, 164, 195);
+    color: white;
+    border: none;
+    padding: 10px;
+}
+
+.ReviewForm input[type=text] {
+    padding: 10px;
+    padding-left: 0px;
+    margin: 20px;
+    font-size: 1em;
+    outline: none;
+    border: none;
+    background: transparent;
+    border-bottom: 1px slateblue solid;
+}
+
+.ReviewForm input[type=range] {
+    margin: 20px;
+    width: 250px;
+}
+
+.review-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.ReviewForm textarea {
+    outline: none;
+    resize: none;
+    overflow: auto;
+    width: 350px;
+    margin-top: 10px;
+    margin: 20px;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #b5b5b5;
+}
+
+.review-container {
+    box-shadow: 0px 3px 15px 1px rgba(0,0,0,0.1);
+    display: grid;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.range {
+    -webkit-appearance: none;
+    vertical-align: middle;
+    outline: none;
+    border: none;
+    padding: 0;
+    background: none;
+  }
+
+.range::-webkit-slider-runnable-track {
+    background-color: #d7dbdd;
+    height: 6px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+}
+
+.range::-moz-range-track {
+    background-color: #d7dbdd;
+    height: 6px;
+    border-radius: 3px;
+    border: none;
+  }
+  
+.range::-ms-track {
+    color: transparent;
+    border: none;
+    background: none;
+    height: 6px;
+}
+
+.range::-ms-fill-lower { 
+    background-color: #d7dbdd;
+    border-radius: 3px;
+}
+
+.range::-ms-fill-upper { 
+    background-color: #d7dbdd;
+    border-radius: 3px;
+}
+
+.range::-ms-tooltip { display: none; /* display and visibility only */ }
+
+.range::-moz-range-thumb {
+    border-radius: 20px;
+    height: 30px;
+    width: 30px;
+    border: none;
+    background: none;
+    background-color: #606670;
+}
+
+.range:active::-moz-range-thumb {
+    outline: none;
+}
+
+.range::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    border-radius: 100%;
+    background-color: slateblue;
+    background: url(../../images/star.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 30px;
+    width: 30px;
+    margin-top: -13px;
+}
+
+.range:active::-webkit-slider-thumb {
+    outline: none;
+}
+
+.range::-ms-thumb { 
+    border-radius: 100%;
+    background-color: slateblue;
+    height: 18px;
+    width: 18px; 
+    border: none;
+}
+
+.range:active::-ms-thumb {
+    border: none;
+}
+  
+

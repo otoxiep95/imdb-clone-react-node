@@ -1,0 +1,14 @@
+.ReviewCard {
+    margin: 20px;
+    background-color: white;
+    box-shadow: 0px 3px 15px 1px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 20px;
+    width: 600px;
+    word-break: break-all;
+}
+
+.review-info {
+    color: #6d6d6d;
+    padding-bottom: 10px;
+}

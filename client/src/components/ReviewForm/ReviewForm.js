@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
+import "./ReviewForm.css"
 
 export default function ReviewForm({ movieId, reviews, setReviews }) {
   const [reviewId, setReviewId] = useState();
   const [title, setTitle] = useState("");
-  const [rating, setRating] = useState();
+  const [rating, setRating] = useState(3);
   const [content, setContent] = useState("");
   const [hasReview, setHasReview] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
 
   function handleUserHasReview() {
     fetch("http://localhost:9090/api/review/hasreview/" + movieId, {
@@ -57,6 +60,10 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
     }).then((res) => {
       if (res.ok) {
         setHasReview(true);
+        setSuccessMessage("Review has been updated");
+        setTimeout(()=> {
+          setSuccessMessage("");
+        },2000);
       }
     });
   }
@@ -110,41 +117,53 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
   }, [movieId, hasReview]);
 
   return (
-    <div>
-      <form>
-        <input
-          type="text"
-          name="title"
-          placeholder="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <input
-          type="range"
-          name="rating"
-          min="1"
-          max="5"
-          defaultValue="3"
-          onChange={(e) => setRating(e.target.value)}
-        ></input>
-        <textarea
-          type="text"
-          name="content"
-          placeholder="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        {hasReview ? (
-          <>
-            <button onClick={handleUpdateReview}>Update</button>
-            <button onClick={handleDeleteReview}>Delete</button>
-          </>
-        ) : (
-          <button type="button" onClick={submitReview}>
-            Post
-          </button>
-        )}
-      </form>
+    <div className="ReviewForm">
+      <div className="review-container">
+        <form>
+          <label>Rating</label>
+          <div>
+            <input
+              type="range"
+              name="rating"
+              min="1"
+              max="5"
+              value={rating}
+              className="range"
+              onChange={(e) => setRating(e.target.value)}
+            />
+            <span>{rating} stars</span>
+          </div>
+          <label>Title</label>
+          <input
+            type="text"
+            name="title"
+            placeholder="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <label>Content</label>
+          <textarea
+            type="text"
+            name="content"
+            placeholder="content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          {hasReview ? (
+            <>
+            {successMessage ? <p className="success">{successMessage}</p> : ""}
+              <div className="review-buttons">
+                <button type="button" onClick={handleUpdateReview}>Update</button>
+                <button type="button" onClick={handleDeleteReview}>Delete</button>
+              </div>
+            </>
+          ) : (
+            <button type="button" onClick={submitReview}>
+              Post
+            </button>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

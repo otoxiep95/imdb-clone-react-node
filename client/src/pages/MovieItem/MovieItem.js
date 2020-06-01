@@ -3,9 +3,8 @@ import keys from "../../config/keys";
 import "./MovieItem.css";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import noPoster from "../../images/no-poster.png";
-import ReviewForm from "../../components/ReviewForm/ReviewForm";
-import ReviewCard from "../../components/ReviewCard/ReviewCard";
 import Review from "../../components/Review/Review";
+import { SyncLoader } from "react-spinners";
 
 export default function MovieItem(props) {
   const { isAuthenticated } = props;
@@ -226,7 +225,11 @@ export default function MovieItem(props) {
           </div>
         </>
       ) : (
-        <p>loading movie..</p>
+        <div className="inner-movie-header">
+          <div className="loader">
+            <SyncLoader loading={isLoading} color={"#ffff"} />
+          </div>
+        </div>
       )}
     </div>
   );

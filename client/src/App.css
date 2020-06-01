@@ -22,6 +22,16 @@ a {
   color: white;
 }
 
+.success {
+  margin-left: 20px;
+  color: #62a4c3;
+}
+
 .inner-home-header .error {
   font-size: 18px;
+}
+
+.loader {
+  grid-column: 1/-1;
+  justify-self: center;
 }

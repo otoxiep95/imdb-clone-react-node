@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReviewCard from "../ReviewCard/ReviewCard";
 import ReviewForm from "../ReviewForm/ReviewForm";
+import "./Review.css";
 
 export default function Review({ isAuthenticated, movie }) {
   const [reviews, setReviews] = useState([]);
@@ -19,6 +20,7 @@ export default function Review({ isAuthenticated, movie }) {
         }
       })
       .then((data) => {
+        console.log(data)
         setReviews(data);
       });
   }
@@ -41,9 +43,18 @@ export default function Review({ isAuthenticated, movie }) {
         </>
       )}
 
-      <h2>Reviews</h2>
+      <h2>
+        Reviews {reviews.length? "(" + reviews.length + ")" : ''}
+      </h2>
+      
       {reviews &&
-        reviews.map((review) => <ReviewCard key={review.id} review={review} />)}
+        <div className="review-list">
+          {reviews.map((review) => <ReviewCard key={review.id} review={review} />)}
+        </div>
+      }
+      {!reviews.length &&
+        <p className="no-review">There are no reviews yet!</p>
+      }
     </div>
   );
 }

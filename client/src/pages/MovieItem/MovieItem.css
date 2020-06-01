@@ -1,5 +1,7 @@
 .MovieItem h2 {
     margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .movie-header {
@@ -12,7 +14,7 @@
 .inner-movie-header {
     /* background: linear-gradient(to right, rgb(20, 20, 50) 150px, rgba(144, 102, 102, 0.84) 100%); */
     background: linear-gradient(to right, rgb(99, 164, 195) 150px, rgba(58, 42, 146, 0.7) 100%);
-    height: 100%;
+    height: 550px;
     
     display: grid;
     grid-template-columns: .5fr 1fr;

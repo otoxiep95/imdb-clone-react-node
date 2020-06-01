@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const Review = require("../../models/Review.js");
+const User = require("../../models/User.js");
 
 //get all reviews for movie //TESTED
 router.get("/:movieId/", async (req, res) => {
   const movieId = req.params.movieId;
   const movieReviews = await Review.query().where("movie_id", movieId);
-
   return res.json(movieReviews);
 });
 
