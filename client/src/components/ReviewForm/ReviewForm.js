@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-export default function ReviewForm({ movieId }) {
+export default function ReviewForm({ movieId, reviews, setReviews }) {
+  const [reviewId, setReviewId] = useState();
   const [title, setTitle] = useState("");
   const [rating, setRating] = useState();
   const [content, setContent] = useState("");
@@ -28,6 +29,7 @@ export default function ReviewForm({ movieId }) {
           data = data[0];
           console.log(data.title);
           //setUserReview(data);
+          setReviewId(data.id);
           setTitle(data.title);
           setRating(data.rating);
           setContent(data.content);
@@ -39,17 +41,73 @@ export default function ReviewForm({ movieId }) {
       });
   }
 
-  function handleUpdateReview() {}
+  function handleUpdateReview() {
+    fetch("http://localhost:9090/api/review/" + reviewId, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        title,
+        rating,
+        content,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        setHasReview(true);
+      }
+    });
+  }
 
-  function handleDeleteReview() {}
+  function handleDeleteReview() {
+    fetch("http://localhost:9090/api/review/" + reviewId, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }).then((res) => {
+      if (res.ok) {
+        setHasReview(false);
+      }
+    });
+  }
 
   function submitReview() {
-    console.log("Hello");
+    fetch("http://localhost:9090/api/review/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        title,
+        rating,
+        content,
+        movie_id: movieId,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          setHasReview(true);
+          return res.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        let newReviews = [...reviews];
+        newReviews.unshift(data.review);
+        setReviews(newReviews);
+      });
   }
 
   useEffect(() => {
     handleUserHasReview();
-  }, []);
+  }, [movieId, hasReview]);
 
   return (
     <div>
@@ -66,7 +124,7 @@ export default function ReviewForm({ movieId }) {
           name="rating"
           min="1"
           max="5"
-          value="3"
+          defaultValue="3"
           onChange={(e) => setRating(e.target.value)}
         ></input>
         <textarea
@@ -79,7 +137,7 @@ export default function ReviewForm({ movieId }) {
         {hasReview ? (
           <>
             <button onClick={handleUpdateReview}>Update</button>
-            <button>Delete</button>
+            <button onClick={handleDeleteReview}>Delete</button>
           </>
         ) : (
           <button type="button" onClick={submitReview}>

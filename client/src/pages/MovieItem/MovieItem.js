@@ -3,8 +3,9 @@ import keys from "../../config/keys";
 import "./MovieItem.css";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import noPoster from "../../images/no-poster.png";
-import ReviewForm from "../../components/Review/ReviewForm";
-import ReviewCard from "../../components/Review/ReviewCard";
+import ReviewForm from "../../components/ReviewForm/ReviewForm";
+import ReviewCard from "../../components/ReviewCard/ReviewCard";
+import Review from "../../components/Review/Review";
 
 export default function MovieItem(props) {
   const { isAuthenticated } = props;
@@ -204,18 +205,7 @@ export default function MovieItem(props) {
             </div>
           </div>
           <div className="reviews">
-            {isAuthenticated && (
-              <>
-                <h2>Post Review</h2>
-                <ReviewForm movieId={movie.id} />
-              </>
-            )}
-
-            <h2>Reviews</h2>
-            {reviews &&
-              reviews.map((review) => (
-                <ReviewCard key={review.id} review={review} />
-              ))}
+            <Review isAuthenticated={isAuthenticated} movie={movie} />
           </div>
           <div className="similar">
             {similarMovies.length ? <h2>Similar movies</h2> : ""}
