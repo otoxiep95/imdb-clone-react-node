@@ -3,13 +3,13 @@ import { NavLink } from 'react-router-dom';
 import './Navbar.css'
 
 export default function Navbar({ isAuthenticated }) {
-    
+
     return (
         <div className={isAuthenticated ? "Navbar auth" : "Navbar"}>
             <nav>
                 <ul>
                     <li>
-                        Logo
+                        <h3>Ms. IMDB</h3>
                     </li>
                     <li>
                         <NavLink exact to="/" activeClassName="selected">
@@ -36,19 +36,19 @@ export default function Navbar({ isAuthenticated }) {
                             </li>
                         </>
                     ) : (
-                        <>
-                            <li>
-                                <NavLink to="/login" activeClassName="selected">
-                                    Log in
+                            <>
+                                <li>
+                                    <NavLink to="/login" activeClassName="selected">
+                                        Log in
                                 </NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/signup" activeClassName="selected">
-                                    Sign up
+                                </li>
+                                <li>
+                                    <NavLink to="/signup" activeClassName="selected">
+                                        Sign up
                                 </NavLink>
-                            </li>
-                        </>
-                    )}
+                                </li>
+                            </>
+                        )}
                 </ul>
             </nav>
         </div>

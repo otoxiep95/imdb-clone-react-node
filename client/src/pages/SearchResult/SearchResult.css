@@ -1,4 +1,25 @@
 .SearchResult h1 {
-    margin-left: 20px;
+    margin-bottom: 10px;
     margin-top: 20px;
+}
+
+.SearchResult {
+    background: linear-gradient(to right, rgb(99, 164, 195) 150px, rgba(58, 42, 146, 0.7) 100%);
+    background-repeat: repeat space;
+    background-repeat: repeat repeat;
+    background-repeat: round space;
+    height: 100%;
+
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.search-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 20px;
+    justify-content: center;
+    text-align: center;
 }
