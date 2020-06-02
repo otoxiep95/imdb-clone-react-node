@@ -8,6 +8,7 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
   const [content, setContent] = useState("");
   const [hasReview, setHasReview] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [error, setError] = useState("");
 
 
   function handleUserHasReview() {
@@ -61,9 +62,9 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
       if (res.ok) {
         setHasReview(true);
         setSuccessMessage("Review has been updated");
-        setTimeout(()=> {
+        setTimeout(() => {
           setSuccessMessage("");
-        },2000);
+        }, 2000);
       }
     });
   }
@@ -103,12 +104,20 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
           setHasReview(true);
           return res.json();
         }
+        else {
+          throw res;
+        }
       })
       .then((data) => {
         console.log(data);
         let newReviews = [...reviews];
         newReviews.unshift(data.review);
         setReviews(newReviews);
+      })
+      .catch((error) => {
+        error.json().then((body) => {
+          setError(body.response);
+        });
       });
   }
 
@@ -151,17 +160,18 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
           />
           {hasReview ? (
             <>
-            {successMessage ? <p className="success">{successMessage}</p> : ""}
+              {successMessage ? <p className="success">{successMessage}</p> : ""}
+              {error ? <p>{error}</p> : ""}
               <div className="review-buttons">
                 <button type="button" onClick={handleUpdateReview}>Update</button>
                 <button type="button" onClick={handleDeleteReview}>Delete</button>
               </div>
             </>
           ) : (
-            <button type="button" onClick={submitReview}>
-              Post
-            </button>
-          )}
+              <button type="button" onClick={submitReview}>
+                Post
+              </button>
+            )}
         </form>
       </div>
     </div>
