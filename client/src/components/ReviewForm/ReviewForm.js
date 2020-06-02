@@ -9,7 +9,6 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
   const [hasReview, setHasReview] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-
   function handleUserHasReview() {
     fetch("http://localhost:9090/api/review/hasreview/" + movieId, {
       headers: {
@@ -79,6 +78,10 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
     }).then((res) => {
       if (res.ok) {
         setHasReview(false);
+        const index = reviews.findIndex((review) => review.id === reviewId);
+        const newReviews = [...reviews];
+        newReviews.splice(index, 1);
+        setReviews(newReviews);
       }
     });
   }
