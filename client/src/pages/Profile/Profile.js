@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import { SyncLoader } from "react-spinners";
-import './Profile.css';
+import "./Profile.css";
 
 export default function Profile({ keys, setIsAuthenticated }) {
   const [username, setUsername] = useState("");
@@ -11,7 +11,7 @@ export default function Profile({ keys, setIsAuthenticated }) {
   const [error, setError] = useState("");
   const [favoriteIds, setFavoriteIds] = useState([]);
   const [movies, setMovies] = useState([]);
-  
+
   const history = useHistory();
 
   function getUserInfo() {
@@ -125,17 +125,19 @@ export default function Profile({ keys, setIsAuthenticated }) {
       <h1>Profile</h1>
       {!isLoading ? (
         <>
-          <div class="profile-details">
+          <div className="profile-details">
             <h2>Name: {username}</h2>
             <h2>Email: {email}</h2>
-            <button type="button" class="delete-button" onClick={deleteUser}>
+            <button
+              type="button"
+              className="delete-button"
+              onClick={deleteUser}
+            >
               Delete user
-          </button>
+            </button>
           </div>
           <h1>Favorites</h1>
-          {!movies.length &&
-            <p>You have no favorites yet</p>
-          }
+          {!movies.length && <p>You have no favorites yet</p>}
           <div className="favorite-list">
             {movies &&
               movies.map((movie) => (
@@ -150,8 +152,8 @@ export default function Profile({ keys, setIsAuthenticated }) {
           </div>
         </>
       ) : (
-          <SyncLoader loading={isLoading} color={"#ffff"} />
-        )}
+        <SyncLoader loading={isLoading} color={"#ffff"} />
+      )}
     </div>
   );
 }

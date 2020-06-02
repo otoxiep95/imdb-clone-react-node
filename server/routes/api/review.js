@@ -6,7 +6,9 @@ const User = require("../../models/User.js");
 //get all reviews for movie //TESTED
 router.get("/:movieId/", async (req, res) => {
   const movieId = req.params.movieId;
-  const movieReviews = await Review.query().where("movie_id", movieId);
+  const movieReviews = await Review.query()
+    .where("movie_id", movieId)
+    .withGraphFetched("user");
   return res.json(movieReviews);
 });
 
@@ -17,7 +19,9 @@ router.get("/", async (req, res) => {
   }
 
   const { id } = req.session.user;
+
   const reviews = await Review.query().where({ user_id: id });
+
   return res.json(reviews);
 });
 

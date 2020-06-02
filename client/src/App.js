@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import Login from "./pages/Login/Login.js";
 import Navbar from "./components/Navbar/Navbar.js";
 import Signup from "./pages/Signup/Signup.js";
@@ -16,9 +21,10 @@ import "./App.css";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  //const [isLoading, setIsLoading] = useState(true);
 
-  function handleAuthentication() {
-    fetch("http://localhost:9090/api/users/isloggedin", {
+  async function handleAuthentication() {
+    await fetch("http://localhost:9090/api/users/isloggedin", {
       credentials: "include",
       headers: {
         Accept: "application/json",
@@ -33,8 +39,27 @@ export default function App() {
   }
 
   useEffect(() => {
+    console.log(isAuthenticated);
     handleAuthentication();
   }, [isAuthenticated]);
+
+  const PrivateRoute = ({ render: Component, ...rest }) => (
+    <Route
+      {...rest}
+      render={(props) =>
+        isAuthenticated ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              isAuthenticated,
+            }}
+          />
+        )
+      }
+    />
+  );
 
   return (
     <Router>
@@ -44,20 +69,14 @@ export default function App() {
         </header>
         <main>
           <Switch>
-            <Route 
-              exact path="/" 
-              render={() => <Home keys={keys} />} 
-            />
-            <Route
+            <Route exact path="/" render={() => <Home keys={keys} />} />
+            <PrivateRoute
               path="/profile"
               render={() => (
                 <Profile keys={keys} setIsAuthenticated={setIsAuthenticated} />
               )}
             />
-            <Route 
-              path="/watchlist" 
-              render={() => <Watchlist keys={keys} />} 
-            />
+            <Route path="/watchlist" render={() => <Watchlist keys={keys} />} />
             <Route
               path="/movie/:id"
               render={(props) => (
@@ -76,18 +95,9 @@ export default function App() {
               path="/login"
               render={() => <Login setIsAuthenticated={setIsAuthenticated} />}
             />
-            <Route 
-              path="/signup" 
-              component={Signup} 
-            />
-            <Route 
-              path="/forgotpassword" 
-              component={SendResetEmail} 
-            />
-            <Route 
-              path="/passwordreset/:id/:link" 
-              component={ResetPassword} 
-            />
+            <Route path="/signup" component={Signup} />
+            <Route path="/forgotpassword" component={SendResetEmail} />
+            <Route path="/passwordreset/:id/:link" component={ResetPassword} />
             <Route
               path="/logout"
               render={() => <Logout setIsAuthenticated={setIsAuthenticated} />}
