@@ -3,9 +3,9 @@ const { Model } = require("objection");
 // Import User class model for relationMappings()
 const User = require("./User.js");
 // Create the Todo model class
-class Like extends Model {
+class MovieLike extends Model {
   static get tableName() {
-    return "like";
+    return "movielike";
   }
 
   // defines the relations to other models.
@@ -15,7 +15,7 @@ class Like extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
-          from: "watchlink.user_id",
+          from: "movielike.user_id",
           to: "users.id",
         },
       },
@@ -23,4 +23,4 @@ class Like extends Model {
   }
 }
 // Export the Todo to be used in routes
-module.exports = Like;
+module.exports = MovieLike;

@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 const User = require("../../models/User.js");
-const Like = require("../../models/Like.js");
+const MovieLike = require("../../models/MovieLike.js");
 
 router.get("/isLiked/:movieId", async (req, res) => {
   const movieId = req.params.movieId;
@@ -10,7 +10,7 @@ router.get("/isLiked/:movieId", async (req, res) => {
   if (req.session.user) {
     try {
       console.log(req.session.user.id);
-      const likedMovie = await Like.query()
+      const likedMovie = await MovieLike.query()
         .where({
           movie_id: movieId,
           user_id: req.session.user.id,
@@ -36,7 +36,7 @@ router.get("/", async (req, res) => {
   if (req.session.user) {
     try {
       console.log(req.session.user.id);
-      const userLikedList = await Like.query().where(
+      const userLikedList = await MovieLike.query().where(
         "user_id",
         req.session.user.id
       );
@@ -58,14 +58,14 @@ router.post("/", async (req, res) => {
   if (movie_id) {
     if (req.session.user) {
       try {
-        const isMovieLiked = await Like.query()
+        const isMovieLiked = await MovieLike.query()
           .where({
             movie_id: movie_id,
             user_id: req.session.user.id,
           })
           .limit(1);
         if (!isMovieLiked[0]) {
-          const newLike = await Like.query().insert({
+          const newLike = await MovieLike.query().insert({
             movie_id,
             user_id: req.session.user.id,
           });
@@ -93,7 +93,7 @@ router.delete("/:id", async (req, res) => {
   likeId = req.params.id;
   if (req.session.user) {
     try {
-      await Like.query().deleteById(likeId);
+      await MovieLike.query().deleteById(likeId);
       return res.status(200).send({ response: "success deleted" });
     } catch (error) {
       return res.status(500).send({ response: "couldnt delele watchLink" });

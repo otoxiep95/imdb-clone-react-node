@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import noPoster from "../../images/no-poster.png";
 import Review from "../../components/Review/Review";
@@ -14,7 +14,7 @@ export default function MovieItem(props) {
   const [isInWatchList, setIsInWatchList] = useState(false);
   const [isInFavorite, setIsInFavorite] = useState(false);
   const [reviews, setReviews] = useState([]);
-/*   const [userReview, setUserReview] = useState({}); */
+  /*   const [userReview, setUserReview] = useState({}); */
 
   const history = useHistory();
 
@@ -31,7 +31,7 @@ export default function MovieItem(props) {
         }
       })
       .then((data) => {
-        if(data) {
+        if (data) {
           data.year = Number(data.release_date.split("-", 1)[0]);
           setMovie(data);
           fetchSimilarMovies(movieId);
@@ -73,13 +73,14 @@ export default function MovieItem(props) {
 
   function handleIsInFavorites() {
     const movieId = props.match.params.id;
-    fetch("http://localhost:9090/api/watch/isLiked/" + movieId, {
+    fetch("http://localhost:9090/api/liked/isLiked/" + movieId, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       credentials: "include",
     }).then((res) => {
+      console.log(res);
       if (res.ok) {
         setIsInFavorite(true);
       } else {
@@ -145,7 +146,6 @@ export default function MovieItem(props) {
       });
   }
 
-
   useEffect(() => {
     fetchMovieById();
     /* fetchSimilarMovies(); */
@@ -180,7 +180,7 @@ export default function MovieItem(props) {
                 <h1>
                   {movie.title} ({movie.year})
                 </h1>
-                {isAuthenticated &&
+                {isAuthenticated && (
                   <>
                     {isInWatchList ? (
                       <div>Already in watchlist</div>
@@ -198,7 +198,7 @@ export default function MovieItem(props) {
                       </button>
                     )}
                   </>
-                }
+                )}
                 <p>{movie.release_date} (US)</p>
                 {movie.genres.map(function (genre, index) {
                   return (

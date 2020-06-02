@@ -8,7 +8,11 @@ exports.seed = function (knex) {
       return knex("review")
         .del()
         .then(() => {
-          return knex("users").del();
+          return knex("movielike")
+            .del()
+            .then(() => {
+              return knex("users").del();
+            });
         });
     })
     .then(() => {

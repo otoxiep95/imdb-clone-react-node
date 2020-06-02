@@ -36,7 +36,7 @@ exports.up = function (knex) {
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
     })
-    .createTable("like", (table) => {
+    .createTable("movieLike", (table) => {
       table.increments("id");
       table.integer("user_id").unsigned().notNullable();
       table.integer("movie_id").unsigned().notNullable();
@@ -54,7 +54,7 @@ exports.down = function (knex) {
   return (
     knex.schema
       // Here, delete tables in reverse order because todos depends on users
-      .dropTableIfExists("like")
+      .dropTableIfExists("movieLike")
       .dropTableIfExists("watchlink")
       .dropTableIfExists("review")
       .dropTableIfExists("users")
