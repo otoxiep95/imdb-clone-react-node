@@ -4,6 +4,10 @@ import MovieCard from "../../components/MovieCard/MovieCard";
 import noPoster from "../../images/no-poster.png";
 import Review from "../../components/Review/Review";
 import { SyncLoader } from "react-spinners";
+import heart from "../../images/heart.svg"
+import bookmark from "../../images/watchlist.svg"
+import bookmarkFilled from "../../images/watchlist-filled.svg"
+import heartFilled from "../../images/heart-filled.svg"
 import "./MovieItem.css";
 
 export default function MovieItem(props) {
@@ -181,32 +185,42 @@ export default function MovieItem(props) {
                   {movie.title} ({movie.year})
                 </h1>
                 {isAuthenticated && (
-                  <>
+                  <div className="movie-buttons">
                     {isInWatchList ? (
-                      <div>Already in watchlist</div>
+                      <div className="like-container">
+                        <img src={bookmarkFilled}></img>
+                        <span>Already in watchlist</span>
+                      </div>
                     ) : (
-                      <button type="button" onClick={addToWatchList}>
-                        Watchlist
-                      </button>
+                      <div onClick={addToWatchList} className="like-container">
+                        <img src={bookmark}></img>
+                        <span>Watchlist</span>
+                      </div>
                     )}
 
                     {isInFavorite ? (
-                      <div>Already in favorites</div>
+                      <div className="like-container">
+                        <img src={heartFilled}></img>
+                        <span>Already liked</span>
+                      </div>  
                     ) : (
-                      <button type="button" onClick={addToFavorites}>
-                        Like
-                      </button>
+                      <div onClick={addToFavorites} className="like-container">
+                        <img src={heart}></img>
+                        <span>Like</span>
+                      </div>
                     )}
-                  </>
+                  </div>
                 )}
-                <p>{movie.release_date} (US)</p>
-                {movie.genres.map(function (genre, index) {
-                  return (
-                    <span key={genre.id}>
-                      {(index ? ", " : "") + genre.name}
-                    </span>
-                  );
-                })}
+                <div className="movie-general">
+                  <p>{movie.release_date} (US)</p>
+                  {movie.genres.map(function (genre, index) {
+                    return (
+                      <span key={genre.id}>
+                        {(index ? ", " : "") + genre.name}
+                      </span>
+                    );
+                  })}
+                </div>
                 <p>{movie.overview}</p>
               </div>
             </div>

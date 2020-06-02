@@ -1,8 +1,6 @@
 .watch-list {
     background: linear-gradient(to right, rgb(99, 164, 195) 150px, rgba(58, 42, 146, 0.7) 100%);
-    background-repeat: repeat space;
-    background-repeat: repeat repeat;
-    background-repeat: round space;
+    min-height: calc(100vh - 65px);
     height: 100%;
 
     display: grid;
@@ -13,10 +11,11 @@
 
 .watch-list-section {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 20px;
     justify-content: center;
     text-align: center;
+    margin-bottom: 20px;
 }
 
 .watch-list button {

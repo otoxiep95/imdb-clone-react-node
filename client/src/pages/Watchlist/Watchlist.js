@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import MovieCard from "../../components/MovieCard/MovieCard";
+import { SyncLoader } from "react-spinners";
 import './Watchlist.css';
 
 export default function Watchlist({ keys }) {
   const [watchlistIds, setWatchlistIds] = useState([]);
   const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   async function getWatchlist() {
     await fetch("http://localhost:9090/api/watch/", {
@@ -48,6 +50,7 @@ export default function Watchlist({ keys }) {
           //watchListedMovies.push(data);
           const watchMovie = { movieData: data, watchLinkId: watchElement.id };
           setMovies((movies) => movies.concat(watchMovie));
+          setIsLoading(false);
           console.log(movies);
         });
     });
@@ -75,25 +78,31 @@ export default function Watchlist({ keys }) {
       }
     });
   }
-  //console.log(watchListedMovies);
 
   return (
-    <div>
-      <div className="watch-list">
-        <h1>Watchlist</h1>
-        <div className="watch-list-section">
-          {movies &&
-            movies.map((movie) => (
-              <MovieCard
-                key={movie.movieData.id}
-                movie={movie.movieData}
-                id={movie.watchLinkId}
-                isList={true}
-                handleRemove={handleRemove}
-              />
-            ))}
-        </div>
-      </div>
+    <div className="watch-list">
+      <h1>Watchlist</h1>
+      {!isLoading ? (
+        <>
+          {!movies.length &&
+            <p>You have no movies in your watchlist yet!</p>
+          }
+          <div className="watch-list-section">
+            {movies &&
+              movies.map((movie) => (
+                <MovieCard
+                  key={movie.movieData.id}
+                  movie={movie.movieData}
+                  id={movie.watchLinkId}
+                  isList={true}
+                  handleRemove={handleRemove}
+                />
+              ))}
+          </div>
+        </>
+      ) : (
+        <SyncLoader loading={isLoading} color={"#ffff"} />
+      )}
     </div>
   );
 }
