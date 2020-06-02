@@ -126,13 +126,16 @@ export default function Profile({ keys, setIsAuthenticated }) {
         <>
           <div class="profile-details">
             <h1>Profile</h1>
-            <h1>Name: {username}</h1>
-            <h1>Email: {email}</h1>
+            <h2>Name: {username}</h2>
+            <h2>Email: {email}</h2>
             <button type="button" class="delete-button" onClick={deleteUser}>
               Delete user
           </button>
           </div>
           <h1>Favorites</h1>
+          {!movies.length &&
+            <p>You have no favorites yet</p>
+          }
           <div className="favorite-list">
             {movies &&
               movies.map((movie) => (

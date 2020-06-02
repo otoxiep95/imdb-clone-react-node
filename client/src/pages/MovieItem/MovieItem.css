@@ -36,3 +36,21 @@
     border-radius: 10px;
 }
 
+
+.like-container img {
+    width: 18px;
+    margin-right: 5px;
+}
+
+.movie-general {
+    color: rgba(255, 255, 255,.7);
+}
+
+.movie-buttons {
+    display: inline-flex;
+    padding-top: 5px;
+}
+
+.movie-buttons div:nth-child(1) {
+    margin-right: 10px;
+}

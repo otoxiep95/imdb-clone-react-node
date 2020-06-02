@@ -1,8 +1,6 @@
 .watch-list {
     background: linear-gradient(to right, rgb(99, 164, 195) 150px, rgba(58, 42, 146, 0.7) 100%);
-    background-repeat: repeat space;
-    background-repeat: repeat repeat;
-    background-repeat: round space;
+    min-height: calc(100vh - 65px);
     height: 100%;
 
     display: grid;
