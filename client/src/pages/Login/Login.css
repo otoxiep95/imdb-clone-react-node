@@ -1,6 +1,6 @@
 .Login{
     background: linear-gradient(to right, rgb(99, 164, 195) 150px, rgba(58, 42, 146, 0.7) 100%);
-    height: calc(100vh - 65px);
+    min-height: calc(100vh - 65px);
 
     display: grid;
     justify-content: center;
