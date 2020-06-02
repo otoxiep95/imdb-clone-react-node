@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
-import "./MovieItem.css";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import noPoster from "../../images/no-poster.png";
 import Review from "../../components/Review/Review";
 import { SyncLoader } from "react-spinners";
+import "./MovieItem.css";
 
 export default function MovieItem(props) {
   const { isAuthenticated, keys } = props;
@@ -14,7 +14,7 @@ export default function MovieItem(props) {
   const [isInWatchList, setIsInWatchList] = useState(false);
   const [isInFavorite, setIsInFavorite] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const [userReview, setUserReview] = useState({});
+/*   const [userReview, setUserReview] = useState({}); */
 
   const history = useHistory();
 
@@ -170,9 +170,10 @@ export default function MovieItem(props) {
                 {movie.poster_path ? (
                   <img
                     src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                    alt="Movie poster"
                   />
                 ) : (
-                  <img src={noPoster} />
+                  <img src={noPoster} alt="Movie poster" />
                 )}
               </div>
               <div>

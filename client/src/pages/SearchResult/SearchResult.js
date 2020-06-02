@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import MovieCard from "../../components/MovieCard/MovieCard";
-import keys from "../../config/keys";
 import "./SearchResult.css";
 
-export default function SearchResult(props) {
+export default function SearchResult({ keys, match }) {
     const [movieResults, setMovieResults] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const query = props.match.params.query;
+    const query = match.params.query;
 
     function fetchResults() {
         fetch(`https://api.themoviedb.org/3/search/movie?api_key=${keys.apiKey}&language=en-US&query=${query}&page=1`)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./ReviewCard.css"
 
 export default function ReviewCard({ review, hasReview }) {

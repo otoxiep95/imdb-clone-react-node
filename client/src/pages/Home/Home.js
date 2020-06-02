@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
-import keys from "../../config/keys";
 import inception from "../../images/inception.png";
-import "./Home.css";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import { SyncLoader } from "react-spinners";
+import "./Home.css";
 
-export default function Home() {
+export default function Home({ keys }) {
   const [popularMovies, setPopularMovies] = useState([]);
   const [topRatedMovies, setTopRatedMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);

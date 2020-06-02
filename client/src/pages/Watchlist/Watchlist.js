@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import keys from "../../config/keys";
 import MovieCard from "../../components/MovieCard/MovieCard";
 
-export default function Watchlist() {
+export default function Watchlist({ keys }) {
   const [watchlistIds, setWatchlistIds] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [movies, setMovies] = useState([]);
 
   async function getWatchlist() {

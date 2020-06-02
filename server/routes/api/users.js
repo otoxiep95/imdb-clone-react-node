@@ -102,7 +102,7 @@ router.post("/login", async (req, res) => {
         return res.status(500).send({});
       }
       if (!isSame) {
-        return res.status(404).send({});
+        return res.status(404).send({ response: "Wrong username or password" });
       } else {
         req.session.user = { username: user.username, id: user.id };
         return res

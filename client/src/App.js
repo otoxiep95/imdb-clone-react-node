@@ -40,31 +40,46 @@ export default function App() {
     <Router>
       <div className="App">
         <header>
-          <Navbar
-            isAuthenticated={isAuthenticated}
-            setIsAuthenticated={setIsAuthenticated}
-          />
+          <Navbar isAuthenticated={isAuthenticated} />
         </header>
         <main>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route 
+              exact path="/" 
+              render={() => <Home keys={keys} />} 
+            />
             <Route
               path="/profile"
-              render={() => <Profile setIsAuthenticated={setIsAuthenticated} />}
+              render={() => (
+                <Profile keys={keys} setIsAuthenticated={setIsAuthenticated} />
+              )}
             />
-            <Route path="/watchlist" component={Watchlist} />
+            <Route 
+              path="/watchlist" 
+              render={() => <Watchlist keys={keys} />} 
+            />
             <Route
               path="/movie/:id"
               render={(props) => (
-                <MovieItem {...props} keys={keys} isAuthenticated={isAuthenticated} />
+                <MovieItem
+                  {...props}
+                  keys={keys}
+                  isAuthenticated={isAuthenticated}
+                />
               )}
             />
-            <Route path="/search/:query" component={SearchResult} />
+            <Route
+              path="/search/:query"
+              render={(props) => <SearchResult {...props} keys={keys} />}
+            />
             <Route
               path="/login"
               render={() => <Login setIsAuthenticated={setIsAuthenticated} />}
             />
-            <Route path="/signup" component={Signup} />
+            <Route 
+              path="/signup" 
+              component={Signup} 
+            />
             <Route 
               path="/forgotpassword" 
               component={SendResetEmail} 

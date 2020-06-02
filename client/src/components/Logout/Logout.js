@@ -1,14 +1,10 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-export default function Logout(props) {
-    const {
-        setIsAuthenticated
-    } = props;
-
+export default function Logout({ setIsAuthenticated }) {
     const history = useHistory();
 
-    function handleLogout() {
+    useEffect(() => {
         fetch('http://localhost:9090/api/users/logout', {
             headers: {
                 Accept: "application/json",
@@ -26,13 +22,10 @@ export default function Logout(props) {
         .catch(error => {
             console.log("Unable to log out")
         }) 
-    }
-
-    useEffect(() => {
-        handleLogout();
     }, []);
 
     return (
-        <h1>Log out</h1>
+        <>
+        </>
     )
 }

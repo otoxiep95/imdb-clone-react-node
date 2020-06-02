@@ -3,9 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './Login.css';
 
-export default function Login(props) {
-    const { setIsAuthenticated } = props;
-
+export default function Login({ setIsAuthenticated }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");

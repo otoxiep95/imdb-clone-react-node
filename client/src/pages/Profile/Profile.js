@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
-import keys from "../../config/keys";
 import { useHistory } from "react-router-dom";
 import MovieCard from "../../components/MovieCard/MovieCard";
 
-export default function Profile(props) {
+export default function Profile({ keys, setIsAuthenticated }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [favoriteIds, setFavoriuteIds] = useState([]);
+  const [favoriteIds, setFavoriteIds] = useState([]);
   const [movies, setMovies] = useState([]);
+  
   const history = useHistory();
-
-  const { setIsAuthenticated } = props;
 
   function getUserInfo() {
     fetch("http://localhost:9090/api/users", {
@@ -68,7 +66,7 @@ export default function Profile(props) {
       })
       .then((data) => {
         console.log(data);
-        setFavoriuteIds(data);
+        setFavoriteIds(data);
         getFavoriteMovies(data);
       });
   }
