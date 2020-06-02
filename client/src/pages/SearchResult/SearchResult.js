@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MovieCard from "../../components/MovieCard/MovieCard";
+import { SyncLoader } from "react-spinners";
 import "./SearchResult.css";
 
 export default function SearchResult({ keys, match }) {
@@ -40,7 +41,7 @@ export default function SearchResult({ keys, match }) {
                   ))}
               </div>
             ):(
-               <p>Loading results...</p>
+                <SyncLoader loading={isLoading} color={"#ffff"} />
             )}
         </div>
     )

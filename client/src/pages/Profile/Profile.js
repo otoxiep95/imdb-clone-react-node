@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import MovieCard from "../../components/MovieCard/MovieCard";
+import { SyncLoader } from "react-spinners";
 import './Profile.css';
 
 export default function Profile({ keys, setIsAuthenticated }) {
@@ -88,7 +89,6 @@ export default function Profile({ keys, setIsAuthenticated }) {
         })
         .then((data) => {
           console.log(data);
-          //watchListedMovies.push(data);
           const watchMovie = { movieData: data, likeId: watchElement.id };
           setMovies((movies) => movies.concat(watchMovie));
           console.log(movies);
@@ -122,10 +122,10 @@ export default function Profile({ keys, setIsAuthenticated }) {
 
   return (
     <div className="profile-container">
+      <h1>Profile</h1>
       {!isLoading ? (
         <>
           <div class="profile-details">
-            <h1>Profile</h1>
             <h2>Name: {username}</h2>
             <h2>Email: {email}</h2>
             <button type="button" class="delete-button" onClick={deleteUser}>
@@ -150,7 +150,7 @@ export default function Profile({ keys, setIsAuthenticated }) {
           </div>
         </>
       ) : (
-          <p>Loading movies...</p>
+          <SyncLoader loading={isLoading} color={"#ffff"} />
         )}
     </div>
   );

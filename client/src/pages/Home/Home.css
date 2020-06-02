@@ -96,6 +96,13 @@
     padding: 5px;
 }
 
+.favorite-list .movie-info button, .watch-list .movie-info button {
+    background: rgb(99, 164, 195);
+    color: white;
+    border: none;
+    min-width: 100px;
+}
+
 .poster-container {
     border-radius: 10px 10px 0px 0px;
     width: 200px;
