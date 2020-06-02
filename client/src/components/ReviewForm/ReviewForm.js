@@ -43,7 +43,7 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
       });
   }
 
-  function handleUpdateReview() {
+  function handleUpdateReview() {  
     fetch("http://localhost:9090/api/review/" + reviewId, {
       method: "PATCH",
       headers: {
@@ -59,12 +59,18 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
     }).then((res) => {
       if (res.ok) {
         setHasReview(true);
+        const index = reviews.findIndex(review => review.id === reviewId);
+        const newReviews = [...reviews];
+        newReviews[index].title = title;
+        newReviews[index].rating = rating;
+        newReviews[index].content = content;
+        setReviews(newReviews);
         setSuccessMessage("Review has been updated");
         setTimeout(()=> {
           setSuccessMessage("");
         },2000);
       }
-    });
+    })
   }
 
   function handleDeleteReview() {
