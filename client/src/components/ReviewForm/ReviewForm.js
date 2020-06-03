@@ -124,6 +124,7 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
         }
       })
       .then((data) => {
+        data.review.created_at = new Date();
         let newReviews = [...reviews];
         newReviews.unshift(data.review);
         setReviews(newReviews);

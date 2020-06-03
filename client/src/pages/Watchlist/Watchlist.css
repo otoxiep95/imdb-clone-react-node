@@ -9,6 +9,10 @@
     text-align: center;
 }
 
+.watch-list p {
+    color: white;
+}
+
 .watch-list-section {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

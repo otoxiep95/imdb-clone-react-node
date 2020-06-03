@@ -196,6 +196,12 @@ router.post("/passwordreset", async (req, res) => {
       return res.status(404).send({ response: "user does not exist" });
     }
 
+    if (newPassword && newPassword.length < 8) {
+      return res
+        .status(400)
+        .send({ response: "password does not fulfill the requirements" });
+    }
+
     if(newPassword && confirmNewPassword) {
       if (newPassword !== confirmNewPassword) {
         return res.status(400).send({ response: "passwords do not match" });
