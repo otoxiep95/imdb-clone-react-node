@@ -1,29 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { SyncLoader } from "react-spinners";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import noPoster from "../../images/no-poster.png";
 import Review from "../../components/Review/Review";
-import { SyncLoader } from "react-spinners";
 import heart from "../../images/heart.svg"
 import bookmark from "../../images/watchlist.svg"
 import bookmarkFilled from "../../images/watchlist-filled.svg"
 import heartFilled from "../../images/heart-filled.svg"
 import "./MovieItem.css";
 
-export default function MovieItem(props) {
-  const { isAuthenticated, keys } = props;
+export default function MovieItem({ isAuthenticated, keys, match, location }) {
   const [movie, setMovie] = useState();
   const [similarMovies, setSimilarMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isInWatchList, setIsInWatchList] = useState(false);
   const [isInFavorite, setIsInFavorite] = useState(false);
-  const [reviews, setReviews] = useState([]);
-  /*   const [userReview, setUserReview] = useState({}); */
-
+  
   const history = useHistory();
 
   function fetchMovieById() {
-    const movieId = props.match.params.id;
+    const movieId = match.params.id;
     fetch(
       `https://api.themoviedb.org/3/movie/${movieId}?api_key=${keys.apiKey}&language=en-US`
     )
@@ -59,7 +56,7 @@ export default function MovieItem(props) {
   }
 
   function handleIsInWatchList() {
-    const movieId = props.match.params.id;
+    const movieId = match.params.id;
     fetch("http://localhost:9090/api/watch/hasWatchLink/" + movieId, {
       headers: {
         Accept: "application/json",
@@ -76,7 +73,7 @@ export default function MovieItem(props) {
   }
 
   function handleIsInFavorites() {
-    const movieId = props.match.params.id;
+    const movieId = match.params.id;
     fetch("http://localhost:9090/api/liked/isLiked/" + movieId, {
       headers: {
         Accept: "application/json",
@@ -94,7 +91,7 @@ export default function MovieItem(props) {
   }
 
   function addToWatchList() {
-    const movieId = props.match.params.id;
+    const movieId = match.params.id;
     fetch("http://localhost:9090/api/watch/", {
       method: "POST",
       headers: {
@@ -113,7 +110,7 @@ export default function MovieItem(props) {
   }
 
   function addToFavorites() {
-    const movieId = props.match.params.id;
+    const movieId = match.params.id;
     fetch("http://localhost:9090/api/liked/", {
       method: "POST",
       headers: {
@@ -131,33 +128,12 @@ export default function MovieItem(props) {
     });
   }
 
-  function getAllReviews() {
-    const movieId = props.match.params.id;
-    fetch("http://localhost:9090/api/review/" + movieId, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .then((data) => {
-        setReviews(data);
-      });
-  }
 
   useEffect(() => {
     fetchMovieById();
-    /* fetchSimilarMovies(); */
     handleIsInWatchList();
     handleIsInFavorites();
-    getAllReviews();
-    //handleUserHasReview();
-  }, [props.location]);
+  }, [location]);
 
   return (
     <div className="MovieItem">
@@ -188,24 +164,36 @@ export default function MovieItem(props) {
                   <div className="movie-buttons">
                     {isInWatchList ? (
                       <div className="like-container">
-                        <img src={bookmarkFilled}></img>
+                        <img 
+                          src={bookmarkFilled}
+                          alt="bookmark filled"
+                        />
                         <span>Already in watchlist</span>
                       </div>
                     ) : (
                       <div onClick={addToWatchList} className="like-container">
-                        <img src={bookmark}></img>
+                        <img 
+                          src={bookmark}
+                          alt="bookmark"
+                        />
                         <span>Watchlist</span>
                       </div>
                     )}
 
                     {isInFavorite ? (
                       <div className="like-container">
-                        <img src={heartFilled}></img>
+                        <img 
+                          src={heartFilled}
+                          alt="heart filled"
+                        />
                         <span>Already liked</span>
                       </div>  
                     ) : (
                       <div onClick={addToFavorites} className="like-container">
-                        <img src={heart}></img>
+                        <img 
+                          src={heart}
+                          alt="heart"
+                        />
                         <span>Like</span>
                       </div>
                     )}

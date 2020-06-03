@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Review = require("../../models/Review.js");
-const User = require("../../models/User.js");
 
-//get all reviews for movie //TESTED
+
+//get all reviews for movie 
 router.get("/:movieId/", async (req, res) => {
   const movieId = req.params.movieId;
   const movieReviews = await Review.query()
@@ -12,14 +12,13 @@ router.get("/:movieId/", async (req, res) => {
   return res.json(movieReviews);
 });
 
-//get all reviews from user //TESTED
+//get all reviews from user 
 router.get("/", async (req, res) => {
   if (!req.session.user) {
     return res.status(403).send({ response: "you need to log in" });
   }
 
   const { id } = req.session.user;
-
   const reviews = await Review.query().where({ user_id: id });
 
   return res.json(reviews);
@@ -51,7 +50,7 @@ router.get("/hasreview/:movieId/", async (req, res) => {
   }
 });
 
-//post new review //TESTED
+//post new review 
 router.post("/", async (req, res) => {
   const { title, rating, content, movie_id } = req.body;
 
@@ -110,8 +109,12 @@ router.patch("/:id", async (req, res) => {
     return res.status(403).send({ response: "you need to log in" });
   }
 
-  if (!rating || !title || !content) {
-    return res.status(400).send({ response: "missing fields" });
+  if (!title || !rating || !content) {
+    return res.status(400).send({ response: "Missing fields" });
+  }
+
+  if (title.length > 100 || content.length > 280) {
+    return res.status(400).send({ response: "Title or review are too long" });
   }
 
   try {
@@ -134,7 +137,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-//delete review //TESTED, you can delete reviews that dont exist
+//delete review
 router.delete("/:id", async (req, res) => {
   const reviewId = req.params.id;
 
@@ -152,5 +155,5 @@ router.delete("/:id", async (req, res) => {
     return res.status(500).send({ response: "review could not be deleted" });
   }
 });
-// Export to api.js
+
 module.exports = router;

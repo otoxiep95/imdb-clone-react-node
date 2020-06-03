@@ -22,6 +22,10 @@ a {
   color: white;
 }
 
+.error-dark {
+  margin-left: 20px;
+}
+
 .success {
   margin-left: 20px;
   color: #62a4c3;

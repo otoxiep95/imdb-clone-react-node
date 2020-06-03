@@ -1,7 +1,7 @@
 import React from "react";
 import "./ReviewCard.css";
 
-export default function ReviewCard({ review, hasReview }) {
+export default function ReviewCard({ review }) {
   const reviewPosted = new Date(review.created_at);
   const formattedDate = reviewPosted.toLocaleDateString("en-us", {
     weekday: "long",

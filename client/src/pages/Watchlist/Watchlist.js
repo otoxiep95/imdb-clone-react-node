@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import { SyncLoader } from "react-spinners";
-import './Watchlist.css';
+import "./Watchlist.css";
 
 export default function Watchlist({ keys }) {
-  const [watchlistIds, setWatchlistIds] = useState([]);
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -17,26 +16,19 @@ export default function Watchlist({ keys }) {
       credentials: "include",
     })
       .then((res) => {
-  
         if (res.ok) {
           return res.json();
         }
       })
       .then((data) => {
-    
-        setWatchlistIds(data);
-        //setIsLoading(false);
-
         getWatchlistMovies(data);
       });
   }
 
   function getWatchlistMovies(data) {
-  
-
     data.forEach((watchElement) => {
       const movieId = watchElement.movie_id;
-    
+
       fetch(
         `https://api.themoviedb.org/3/movie/${movieId}?api_key=${keys.apiKey}&language=en-US`
       )
@@ -46,12 +38,9 @@ export default function Watchlist({ keys }) {
           }
         })
         .then((data) => {
-     
-          //watchListedMovies.push(data);
           const watchMovie = { movieData: data, watchLinkId: watchElement.id };
           setMovies((movies) => movies.concat(watchMovie));
           setIsLoading(false);
-       
         });
     });
   }
@@ -61,7 +50,6 @@ export default function Watchlist({ keys }) {
   }, []);
 
   async function handleRemove(id) {
-
     await fetch("http://localhost:9090/api/watch/" + id, {
       method: "DELETE",
       headers: {
@@ -84,9 +72,7 @@ export default function Watchlist({ keys }) {
       <h1>Watchlist</h1>
       {!isLoading ? (
         <>
-          {!movies.length &&
-            <p>You have no movies in your watchlist yet!</p>
-          }
+          {!movies.length && <p>You have no movies in your watchlist yet!</p>}
           <div className="watch-list-section">
             {movies &&
               movies.map((movie) => (

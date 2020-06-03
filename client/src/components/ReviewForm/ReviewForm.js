@@ -29,8 +29,6 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
       .then((data) => {
         if (data) {
           data = data[0];
-
-          //setUserReview(data);
           setReviewId(data.id);
           setTitle(data.title);
           setRating(data.rating);
@@ -66,10 +64,19 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
         newReviews[index].content = content;
         setReviews(newReviews);
         setSuccessMessage("Review has been updated");
+        setError("");
         setTimeout(() => {
           setSuccessMessage("");
         }, 2000);
+      } else {
+        throw res;
       }
+    })
+    .catch((error) => {
+      console.log(error)
+      error.json().then((body) => {
+        setError(body.response);
+      });
     });
   }
 
@@ -110,6 +117,7 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
       .then((res) => {
         if (res.ok) {
           setHasReview(true);
+          setError("");
           return res.json();
         } else {
           throw res;
@@ -171,7 +179,7 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
               ) : (
                 ""
               )}
-              {error ? <p>{error}</p> : ""}
+              {error ? <p className="error-dark">{error}</p> : ""}
               <div className="review-buttons">
                 <button type="button" onClick={handleUpdateReview}>
                   Update

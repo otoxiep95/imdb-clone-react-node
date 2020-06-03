@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import "./SendResetEmail.css"
 
-
 export default function SendResetEmail() {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");

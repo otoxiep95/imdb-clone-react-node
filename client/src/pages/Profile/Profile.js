@@ -8,8 +8,6 @@ export default function Profile({ keys, setIsAuthenticated }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [favoriteIds, setFavoriteIds] = useState([]);
   const [movies, setMovies] = useState([]);
 
   const history = useHistory();
@@ -20,7 +18,6 @@ export default function Profile({ keys, setIsAuthenticated }) {
     })
       .then((res) => res.json())
       .then((data) => {
-     
         setUsername(data.username);
         setEmail(data.email);
         setIsLoading(false);
@@ -35,21 +32,14 @@ export default function Profile({ keys, setIsAuthenticated }) {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    })
-      .then((res) => {
-    
-        if (res.ok) {
-          setIsAuthenticated(false);
-          history.push("/");
-        } else {
-          throw res;
-        }
-      })
-      .catch((error) => {
-        error.json().then((body) => {
-          setError(body.response);
-        });
-      });
+    }).then((res) => {
+      if (res.ok) {
+        setIsAuthenticated(false);
+        history.push("/");
+      } else {
+        throw res;
+      }
+    });
   }
 
   async function getFavorites() {
@@ -61,21 +51,16 @@ export default function Profile({ keys, setIsAuthenticated }) {
       credentials: "include",
     })
       .then((res) => {
-     
         if (res.ok) {
           return res.json();
         }
       })
       .then((data) => {
-     
-        setFavoriteIds(data);
         getFavoriteMovies(data);
       });
   }
 
   function getFavoriteMovies(data) {
- 
-
     data.forEach((watchElement) => {
       const movieId = watchElement.movie_id;
 
@@ -88,16 +73,13 @@ export default function Profile({ keys, setIsAuthenticated }) {
           }
         })
         .then((data) => {
-       
           const watchMovie = { movieData: data, likeId: watchElement.id };
           setMovies((movies) => movies.concat(watchMovie));
-       
         });
     });
   }
 
   async function handleRemove(id) {
-  
     await fetch("http://localhost:9090/api/liked/" + id, {
       method: "DELETE",
       headers: {

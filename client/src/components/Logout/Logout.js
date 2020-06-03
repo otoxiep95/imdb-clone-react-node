@@ -11,15 +11,13 @@ export default function Logout({ setIsAuthenticated }) {
         "Content-Type": "application/json",
       },
       credentials: "include",
-    })
-      .then((res) => {
-        if (res.ok) {
-          setIsAuthenticated(false);
-          history.push("/");
-        }
-      })
-      .catch((error) => {});
-  }, []);
+    }).then((res) => {
+      if (res.ok) {
+        setIsAuthenticated(false);
+        history.push("/");
+      }
+    });
+  }, [history]);
 
   return <></>;
 }

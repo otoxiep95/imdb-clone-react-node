@@ -26,7 +26,6 @@ export default function Review({ isAuthenticated, movie }) {
 
   useEffect(() => {
     getAllReviews();
-    //handleUserHasReview();
   }, [movie]);
 
   return (
@@ -43,7 +42,7 @@ export default function Review({ isAuthenticated, movie }) {
       )}
 
       <h2>Reviews {reviews.length ? "(" + reviews.length + ")" : ""}</h2>
-
+      
       {reviews && (
         <div className="review-list">
           {reviews.map((review) => (
@@ -51,6 +50,7 @@ export default function Review({ isAuthenticated, movie }) {
           ))}
         </div>
       )}
+
       {!reviews.length && (
         <p className="no-review">There are no reviews yet!</p>
       )}
