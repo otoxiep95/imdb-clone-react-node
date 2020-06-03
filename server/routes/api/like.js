@@ -6,10 +6,9 @@ const MovieLike = require("../../models/MovieLike.js");
 
 router.get("/isLiked/:movieId", async (req, res) => {
   const movieId = req.params.movieId;
-  console.log(movieId);
+
   if (req.session.user) {
     try {
-      console.log(req.session.user.id);
       const likedMovie = await MovieLike.query()
         .where({
           movie_id: movieId,
@@ -35,7 +34,6 @@ router.get("/isLiked/:movieId", async (req, res) => {
 router.get("/", async (req, res) => {
   if (req.session.user) {
     try {
-      console.log(req.session.user.id);
       const userLikedList = await MovieLike.query().where(
         "user_id",
         req.session.user.id

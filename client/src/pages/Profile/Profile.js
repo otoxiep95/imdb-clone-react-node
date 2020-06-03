@@ -20,7 +20,7 @@ export default function Profile({ keys, setIsAuthenticated }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+     
         setUsername(data.username);
         setEmail(data.email);
         setIsLoading(false);
@@ -37,7 +37,7 @@ export default function Profile({ keys, setIsAuthenticated }) {
       },
     })
       .then((res) => {
-        console.log(res);
+    
         if (res.ok) {
           setIsAuthenticated(false);
           history.push("/");
@@ -61,24 +61,24 @@ export default function Profile({ keys, setIsAuthenticated }) {
       credentials: "include",
     })
       .then((res) => {
-        console.log(res);
+     
         if (res.ok) {
           return res.json();
         }
       })
       .then((data) => {
-        console.log(data);
+     
         setFavoriteIds(data);
         getFavoriteMovies(data);
       });
   }
 
   function getFavoriteMovies(data) {
-    console.log(data);
+ 
 
     data.forEach((watchElement) => {
       const movieId = watchElement.movie_id;
-      console.log(watchElement);
+
       fetch(
         `https://api.themoviedb.org/3/movie/${movieId}?api_key=${keys.apiKey}&language=en-US`
       )
@@ -88,16 +88,16 @@ export default function Profile({ keys, setIsAuthenticated }) {
           }
         })
         .then((data) => {
-          console.log(data);
+       
           const watchMovie = { movieData: data, likeId: watchElement.id };
           setMovies((movies) => movies.concat(watchMovie));
-          console.log(movies);
+       
         });
     });
   }
 
   async function handleRemove(id) {
-    console.log("unlike" + id);
+  
     await fetch("http://localhost:9090/api/liked/" + id, {
       method: "DELETE",
       headers: {

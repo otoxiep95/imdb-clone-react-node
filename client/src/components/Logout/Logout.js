@@ -1,31 +1,25 @@
-import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 export default function Logout({ setIsAuthenticated }) {
-    const history = useHistory();
+  const history = useHistory();
 
-    useEffect(() => {
-        fetch('http://localhost:9090/api/users/logout', {
-            headers: {
-                Accept: "application/json",
-                        "Content-Type": "application/json"
-            },
-            credentials: "include"
-        })
-        .then(res => {
-            console.log(res)
-            if(res.ok) {
-                setIsAuthenticated(false);
-                history.push("/");
-            }
-        })
-        .catch(error => {
-            console.log("Unable to log out")
-        }) 
-    }, []);
+  useEffect(() => {
+    fetch("http://localhost:9090/api/users/logout", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.ok) {
+          setIsAuthenticated(false);
+          history.push("/");
+        }
+      })
+      .catch((error) => {});
+  }, []);
 
-    return (
-        <>
-        </>
-    )
+  return <></>;
 }

@@ -84,7 +84,7 @@ export default function MovieItem(props) {
       },
       credentials: "include",
     }).then((res) => {
-      console.log(res);
+   
       if (res.ok) {
         setIsInFavorite(true);
       } else {

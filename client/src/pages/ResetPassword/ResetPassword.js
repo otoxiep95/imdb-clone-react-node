@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import "./ResetPassword.css"
 
 export default function ResetPassword(props) {
-    console.log(props)
+
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [error, setError] = useState('');
@@ -28,7 +28,7 @@ export default function ResetPassword(props) {
             }) 
         })
         .then(res => {
-            console.log(res)
+   
             if(res.ok) {
                 setSuccessMessage("Successfully updated password");
                 setTimeout(()=> {

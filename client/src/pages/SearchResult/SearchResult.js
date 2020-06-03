@@ -11,7 +11,7 @@ export default function SearchResult({ keys, match }) {
     function fetchResults() {
         fetch(`https://api.themoviedb.org/3/search/movie?api_key=${keys.apiKey}&language=en-US&query=${query}&page=1`)
         .then((res) => {
-           console.log(res)
+     
            if(res.ok) {
                return res.json();
            }

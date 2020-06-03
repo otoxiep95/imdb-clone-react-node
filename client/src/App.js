@@ -31,7 +31,6 @@ export default function App() {
         "Content-Type": "application/json",
       },
     }).then((res) => {
-      console.log(res);
       if (res.ok) {
         setIsAuthenticated(true);
       }
@@ -39,7 +38,6 @@ export default function App() {
   }
 
   useEffect(() => {
-    console.log(isAuthenticated);
     handleAuthentication();
   }, [isAuthenticated]);
 
@@ -76,7 +74,10 @@ export default function App() {
                 <Profile keys={keys} setIsAuthenticated={setIsAuthenticated} />
               )}
             />
-            <Route path="/watchlist" render={() => <Watchlist keys={keys} />} />
+            <PrivateRoute
+              path="/watchlist"
+              render={() => <Watchlist keys={keys} />}
+            />
             <Route
               path="/movie/:id"
               render={(props) => (

@@ -20,7 +20,6 @@ export default function Review({ isAuthenticated, movie }) {
         }
       })
       .then((data) => {
-        console.log(data)
         setReviews(data);
       });
   }
@@ -43,18 +42,18 @@ export default function Review({ isAuthenticated, movie }) {
         </>
       )}
 
-      <h2>
-        Reviews {reviews.length? "(" + reviews.length + ")" : ''}
-      </h2>
-      
-      {reviews &&
+      <h2>Reviews {reviews.length ? "(" + reviews.length + ")" : ""}</h2>
+
+      {reviews && (
         <div className="review-list">
-          {reviews.map((review) => <ReviewCard key={review.id} review={review} />)}
+          {reviews.map((review) => (
+            <ReviewCard key={review.id} review={review} />
+          ))}
         </div>
-      }
-      {!reviews.length &&
+      )}
+      {!reviews.length && (
         <p className="no-review">There are no reviews yet!</p>
-      }
+      )}
     </div>
   );
 }

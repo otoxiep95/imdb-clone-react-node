@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./ReviewForm.css"
+import "./ReviewForm.css";
 
 export default function ReviewForm({ movieId, reviews, setReviews }) {
   const [reviewId, setReviewId] = useState();
@@ -19,7 +19,6 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
       credentials: "include",
     })
       .then((res) => {
-        console.log(res);
         if (res.ok) {
           setHasReview(true);
           return res.json();
@@ -30,7 +29,7 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
       .then((data) => {
         if (data) {
           data = data[0];
-          console.log(data.title);
+
           //setUserReview(data);
           setReviewId(data.id);
           setTitle(data.title);
@@ -44,7 +43,7 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
       });
   }
 
-  function handleUpdateReview() {  
+  function handleUpdateReview() {
     fetch("http://localhost:9090/api/review/" + reviewId, {
       method: "PATCH",
       headers: {
@@ -60,7 +59,7 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
     }).then((res) => {
       if (res.ok) {
         setHasReview(true);
-        const index = reviews.findIndex(review => review.id === reviewId);
+        const index = reviews.findIndex((review) => review.id === reviewId);
         const newReviews = [...reviews];
         newReviews[index].title = title;
         newReviews[index].rating = rating;
@@ -71,7 +70,7 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
           setSuccessMessage("");
         }, 2000);
       }
-    })
+    });
   }
 
   function handleDeleteReview() {
@@ -112,13 +111,11 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
         if (res.ok) {
           setHasReview(true);
           return res.json();
-        }
-        else {
+        } else {
           throw res;
         }
       })
       .then((data) => {
-        console.log(data);
         let newReviews = [...reviews];
         newReviews.unshift(data.review);
         setReviews(newReviews);
@@ -169,18 +166,26 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
           />
           {hasReview ? (
             <>
-              {successMessage ? <p className="success">{successMessage}</p> : ""}
+              {successMessage ? (
+                <p className="success">{successMessage}</p>
+              ) : (
+                ""
+              )}
               {error ? <p>{error}</p> : ""}
               <div className="review-buttons">
-                <button type="button" onClick={handleUpdateReview}>Update</button>
-                <button type="button" onClick={handleDeleteReview}>Delete</button>
+                <button type="button" onClick={handleUpdateReview}>
+                  Update
+                </button>
+                <button type="button" onClick={handleDeleteReview}>
+                  Delete
+                </button>
               </div>
             </>
           ) : (
-              <button type="button" onClick={submitReview}>
-                Post
-              </button>
-            )}
+            <button type="button" onClick={submitReview}>
+              Post
+            </button>
+          )}
         </form>
       </div>
     </div>

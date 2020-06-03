@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import inception from "../../images/inception.png";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import { SyncLoader } from "react-spinners";
@@ -9,8 +9,8 @@ export default function Home({ keys }) {
   const [popularMovies, setPopularMovies] = useState([]);
   const [topRatedMovies, setTopRatedMovies] = useState([]);
   const [upcomingMovies, setUpcomingMovies] = useState([]);
-  const [query, setQuery] = useState('');
-  const [error, setError] = useState('');
+  const [query, setQuery] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   const history = useHistory();
@@ -25,7 +25,6 @@ export default function Home({ keys }) {
         }
       })
       .then((data) => {
-        /* console.log(data); */
         setPopularMovies(data.results);
         setIsLoading(false);
       });
@@ -41,7 +40,6 @@ export default function Home({ keys }) {
         }
       })
       .then((data) => {
-        /* console.log(data); */
         setTopRatedMovies(data.results);
         setIsLoading(false);
       });
@@ -57,7 +55,6 @@ export default function Home({ keys }) {
         }
       })
       .then((data) => {
-        /* console.log(data); */
         setUpcomingMovies(data.results);
         setIsLoading(false);
       });
@@ -65,7 +62,7 @@ export default function Home({ keys }) {
 
   function handleSearch() {
     if (!query) {
-      setError('you need to enter a value')
+      setError("you need to enter a value");
     } else {
       history.push("/search/" + query);
     }
@@ -94,10 +91,12 @@ export default function Home({ keys }) {
                 type="text"
                 name="search"
                 placeholder="search for a movie"
-                onChange={e => setQuery(e.target.value)}
+                onChange={(e) => setQuery(e.target.value)}
               />
-              {error ? <p className="error">{error}</p> : ''}
-              <button type="button" onClick={handleSearch}>Search</button>
+              {error ? <p className="error">{error}</p> : ""}
+              <button type="button" onClick={handleSearch}>
+                Search
+              </button>
             </form>
           </div>
         </div>
@@ -132,7 +131,7 @@ export default function Home({ keys }) {
       ) : (
         <div className="loading">
           <div className="loader">
-            <SyncLoader className="loader" color={"#6a5acd"}/>
+            <SyncLoader className="loader" color={"#6a5acd"} />
           </div>
         </div>
       )}

@@ -6,10 +6,9 @@ const WatchLink = require("../../models/WatchLink.js");
 
 router.get("/hasWatchLink/:movieId", async (req, res) => {
   const movieId = req.params.movieId;
-  console.log(movieId);
+
   if (req.session.user) {
     try {
-      console.log(req.session.user.id);
       const watchLink = await WatchLink.query()
         .where({
           movie_id: movieId,
@@ -55,9 +54,7 @@ router.post("/", async (req, res) => {
 
   //check if user is logged in (not done)
   if (movie_id) {
-    console.log(movie_id);
     if (req.session.user) {
-      console.log(req.session.user.id);
       try {
         const existingWatchLink = await WatchLink.query()
           .where({

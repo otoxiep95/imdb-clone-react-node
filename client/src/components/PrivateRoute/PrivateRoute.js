@@ -13,7 +13,6 @@ const PrivateRoute = (ComponentToWrap) => (props) => {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        console.log(res);
         if (res.ok) {
           setIsAuthorized(true);
         }

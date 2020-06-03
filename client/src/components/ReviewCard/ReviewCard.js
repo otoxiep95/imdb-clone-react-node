@@ -1,10 +1,14 @@
 import React from "react";
-import "./ReviewCard.css"
+import "./ReviewCard.css";
 
 export default function ReviewCard({ review, hasReview }) {
-
   const reviewPosted = new Date(review.created_at);
-  const formattedDate = reviewPosted.toLocaleDateString("en-us", {weekday: "long", day: 'numeric', month: 'long', year: "numeric"});
+  const formattedDate = reviewPosted.toLocaleDateString("en-us", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
   return (
     <div key={review.id} className="ReviewCard">
