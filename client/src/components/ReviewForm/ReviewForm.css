@@ -39,6 +39,7 @@
 .ReviewForm input[type=range] {
     margin: 20px;
     width: 250px;
+    cursor: pointer;
 }
 
 .review-buttons {

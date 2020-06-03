@@ -146,6 +146,7 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
           <label>Rating</label>
           <div>
             <input
+              className="review-range"
               type="range"
               name="rating"
               min="1"
@@ -177,8 +178,8 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
               {successMessage ? (
                 <p className="success">{successMessage}</p>
               ) : (
-                ""
-              )}
+                  ""
+                )}
               {error ? <p className="error-dark">{error}</p> : ""}
               <div className="review-buttons">
                 <button type="button" onClick={handleUpdateReview}>
@@ -190,10 +191,10 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
               </div>
             </>
           ) : (
-            <button type="button" onClick={submitReview}>
-              Post
-            </button>
-          )}
+              <button type="button" onClick={submitReview}>
+                Post
+              </button>
+            )}
         </form>
       </div>
     </div>
