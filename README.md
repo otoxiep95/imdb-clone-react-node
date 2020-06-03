@@ -4,10 +4,13 @@ A movie database web application based on IMDB and TMDB where you can browse and
 
 
 ## Installation
+### The Movie DB API
+1. Sign up with the Movie DB API and get approved for an API key
+2. Navigate to the /client/config/ folder and create a file "keys.js" by copying the "keys_template.js" file, and adding your API key
 ### Server
 1. Log into your local MySQL Database
 2. Create a database
-3. Navigate to the /server/config/ folder, and create a file "db_config.js" by coping the "db_config_template.js" contents, and replacing the database name, username and password with your own credentials
+3. Navigate to the /server/config/ folder, and create a file "db_config.js" by copying the "db_config_template.js" contents, and replacing the database name, username and password with your own credentials
 4. Open an IDE, navigate to the folder /server/ and run the following command
 ```bash
 npm i
