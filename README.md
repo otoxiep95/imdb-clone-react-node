@@ -8,7 +8,10 @@ A movie database web application based on IMDB and TMDB where you can browse and
 1. Log into your local MySQL Database
 2. Create a database
 3. Navigate to the /server/config/ folder, and create a file "db_config.js" by coping the "db_config_template.js" contents, and replacing the database name, username and password with your own credentials
-4. Open an IDE, navigate to the folder /server/ and run "npm i"
+4. Open an IDE, navigate to the folder /server/ and run the following command
+```bash
+npm i
+```
 5. After all the packages are installed, while still in the /server/  directory, run the following commands in this order
 ```bash
 knex migrate:rollback
