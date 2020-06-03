@@ -45,3 +45,7 @@ a {
   justify-self: center;
   align-self: center;
 }
+
+button {
+  cursor: pointer;
+}

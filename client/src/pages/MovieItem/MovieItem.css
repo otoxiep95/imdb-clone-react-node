@@ -49,6 +49,7 @@
 .movie-buttons {
     display: inline-flex;
     padding-top: 5px;
+    cursor: pointer;
 }
 
 .movie-buttons div:nth-child(1) {
