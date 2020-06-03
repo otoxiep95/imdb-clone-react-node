@@ -21,7 +21,11 @@ export default function Watchlist({ keys }) {
         }
       })
       .then((data) => {
-        getWatchlistMovies(data);
+        if (data.length) {
+          getWatchlistMovies(data);
+        } else {
+          setIsLoading(false);
+        }
       });
   }
 

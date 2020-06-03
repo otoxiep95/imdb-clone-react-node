@@ -15,7 +15,9 @@ router.get("/isLiked/:movieId", async (req, res) => {
         })
         .limit(1);
       if (likedMovie[0]) {
-        return res.status(200).send({ response: "Liked" });
+        return res
+          .status(200)
+          .send({ response: "Liked", id: likedMovie[0].id });
       } else {
         return res.status(400).send({ response: "Not liked" });
       }
@@ -98,6 +100,5 @@ router.delete("/:id", async (req, res) => {
     return res.status(403).send({ response: "Not logged in" });
   }
 });
-
 
 module.exports = router;

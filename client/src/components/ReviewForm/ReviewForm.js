@@ -54,30 +54,30 @@ export default function ReviewForm({ movieId, reviews, setReviews }) {
         rating,
         content,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        setHasReview(true);
-        const index = reviews.findIndex((review) => review.id === reviewId);
-        const newReviews = [...reviews];
-        newReviews[index].title = title;
-        newReviews[index].rating = rating;
-        newReviews[index].content = content;
-        setReviews(newReviews);
-        setSuccessMessage("Review has been updated");
-        setError("");
-        setTimeout(() => {
-          setSuccessMessage("");
-        }, 2000);
-      } else {
-        throw res;
-      }
     })
-    .catch((error) => {
-      console.log(error)
-      error.json().then((body) => {
-        setError(body.response);
+      .then((res) => {
+        if (res.ok) {
+          setHasReview(true);
+          const index = reviews.findIndex((review) => review.id === reviewId);
+          const newReviews = [...reviews];
+          newReviews[index].title = title;
+          newReviews[index].rating = rating;
+          newReviews[index].content = content;
+          setReviews(newReviews);
+          setSuccessMessage("Review has been updated");
+          setError("");
+          setTimeout(() => {
+            setSuccessMessage("");
+          }, 2000);
+        } else {
+          throw res;
+        }
+      })
+      .catch((error) => {
+        error.json().then((body) => {
+          setError(body.response);
+        });
       });
-    });
   }
 
   function handleDeleteReview() {

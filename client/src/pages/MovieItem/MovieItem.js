@@ -4,10 +4,10 @@ import { SyncLoader } from "react-spinners";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import noPoster from "../../images/no-poster.png";
 import Review from "../../components/Review/Review";
-import heart from "../../images/heart.svg"
-import bookmark from "../../images/watchlist.svg"
-import bookmarkFilled from "../../images/watchlist-filled.svg"
-import heartFilled from "../../images/heart-filled.svg"
+import heart from "../../images/heart.svg";
+import bookmark from "../../images/watchlist.svg";
+import bookmarkFilled from "../../images/watchlist-filled.svg";
+import heartFilled from "../../images/heart-filled.svg";
 import "./MovieItem.css";
 
 export default function MovieItem({ isAuthenticated, keys, match, location }) {
@@ -16,7 +16,8 @@ export default function MovieItem({ isAuthenticated, keys, match, location }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isInWatchList, setIsInWatchList] = useState(false);
   const [isInFavorite, setIsInFavorite] = useState(false);
-  
+  const [likeId, setLikeId] = useState(null);
+  const [watchListId, setWatchListId] = useState(null);
   const history = useHistory();
 
   function fetchMovieById() {
@@ -63,13 +64,21 @@ export default function MovieItem({ isAuthenticated, keys, match, location }) {
         "Content-Type": "application/json",
       },
       credentials: "include",
-    }).then((res) => {
-      if (res.ok) {
-        setIsInWatchList(true);
-      } else {
-        setIsInWatchList(false);
-      }
-    });
+    })
+      .then((res) => {
+        if (res.ok) {
+          setIsInWatchList(true);
+          return res.json();
+        } else {
+          setIsInWatchList(false);
+        }
+      })
+      .then((data) => {
+        if (data) {
+      
+          setWatchListId(data.id);
+        }
+      });
   }
 
   function handleIsInFavorites() {
@@ -80,14 +89,21 @@ export default function MovieItem({ isAuthenticated, keys, match, location }) {
         "Content-Type": "application/json",
       },
       credentials: "include",
-    }).then((res) => {
-   
-      if (res.ok) {
-        setIsInFavorite(true);
-      } else {
-        setIsInFavorite(false);
-      }
-    });
+    })
+      .then((res) => {
+        if (res.ok) {
+          setIsInFavorite(true);
+          return res.json();
+        } else {
+          setIsInFavorite(false);
+        }
+      })
+      .then((data) => {
+        if (data) {
+       
+          setLikeId(data.id);
+        }
+      });
   }
 
   function addToWatchList() {
@@ -102,11 +118,17 @@ export default function MovieItem({ isAuthenticated, keys, match, location }) {
       body: JSON.stringify({
         movie_id: movieId,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        setIsInWatchList(true);
-      }
-    });
+    })
+      .then((res) => {
+        if (res.ok) {
+          setIsInWatchList(true);
+          return res.json();
+        }
+      })
+      .then((data) => {
+       
+        setWatchListId(data.id);
+      });
   }
 
   function addToFavorites() {
@@ -121,13 +143,42 @@ export default function MovieItem({ isAuthenticated, keys, match, location }) {
       body: JSON.stringify({
         movie_id: movieId,
       }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          setIsInFavorite(true);
+          return res.json();
+        }
+      })
+      .then((data) => {
+      
+        setLikeId(data.id);
+      });
+  }
+
+  async function handleRemove(id, endpoint) {
+ 
+    await fetch("http://localhost:9090/api/" + endpoint + "/" + id, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
     }).then((res) => {
       if (res.ok) {
-        setIsInFavorite(true);
+        // const index = movies.findIndex((movie) => movie.likeId === id);
+        // const newMovies = [...movies];
+        // newMovies.splice(index, 1);
+        // setMovies(newMovies);
+        if (endpoint === "watch") {
+          setIsInWatchList(false);
+        } else if (endpoint === "liked") {
+          setIsInFavorite(false);
+        }
       }
     });
   }
-
 
   useEffect(() => {
     fetchMovieById();
@@ -163,37 +214,35 @@ export default function MovieItem({ isAuthenticated, keys, match, location }) {
                 {isAuthenticated && (
                   <div className="movie-buttons">
                     {isInWatchList ? (
-                      <div className="like-container">
-                        <img 
-                          src={bookmarkFilled}
-                          alt="bookmark filled"
-                        />
+                      <div
+                        onClick={() => {
+                          handleRemove(watchListId, "watch");
+                        }}
+                        className="like-container"
+                      >
+                        <img src={bookmarkFilled} alt="bookmark filled" />
                         <span>Already in watchlist</span>
                       </div>
                     ) : (
                       <div onClick={addToWatchList} className="like-container">
-                        <img 
-                          src={bookmark}
-                          alt="bookmark"
-                        />
+                        <img src={bookmark} alt="bookmark" />
                         <span>Watchlist</span>
                       </div>
                     )}
 
                     {isInFavorite ? (
-                      <div className="like-container">
-                        <img 
-                          src={heartFilled}
-                          alt="heart filled"
-                        />
+                      <div
+                        onClick={() => {
+                          handleRemove(likeId, "liked");
+                        }}
+                        className="like-container"
+                      >
+                        <img src={heartFilled} alt="heart filled" />
                         <span>Already liked</span>
-                      </div>  
+                      </div>
                     ) : (
                       <div onClick={addToFavorites} className="like-container">
-                        <img 
-                          src={heart}
-                          alt="heart"
-                        />
+                        <img src={heart} alt="heart" />
                         <span>Like</span>
                       </div>
                     )}

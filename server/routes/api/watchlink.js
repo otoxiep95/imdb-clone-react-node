@@ -17,7 +17,9 @@ router.get("/hasWatchLink/:movieId", async (req, res) => {
         .limit(1);
       if (watchLink[0]) {
         //res.json(watchLink);
-        return res.status(200).send({ response: "In list" });
+        return res
+          .status(200)
+          .send({ response: "In list", id: watchLink[0].id });
       } else {
         return res.status(404).send({ response: "Not listed" });
       }
