@@ -18,7 +18,7 @@ export default function ReviewCard({ review }) {
       </div>
       <div className="review-info">
         <p>{formattedDate}</p>
-        <p>Posted by: {review.user_id} </p>
+        <p>Posted by: {review.user.username} </p>
       </div>
       <p>{review.content}</p>
     </div>
