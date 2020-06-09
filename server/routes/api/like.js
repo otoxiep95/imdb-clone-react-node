@@ -6,98 +6,106 @@ const MovieLike = require("../../models/MovieLike.js");
 router.get("/isLiked/:movieId", async (req, res) => {
   const movieId = req.params.movieId;
 
-  if (req.session.user) {
+  if (!req.session.user) {
+    return res.status(403).send({ response: "you need to log in" });
+  }
+
+  if (movieId) {
     try {
-      const likedMovie = await MovieLike.query()
-        .where({
-          movie_id: movieId,
-          user_id: req.session.user.id,
-        })
-        .limit(1);
-      if (likedMovie[0]) {
-        return res
-          .status(200)
-          .send({ response: "Liked", id: likedMovie[0].id });
+    const likedMovie = await MovieLike.query()
+      .where({
+        movie_id: movieId,
+        user_id: req.session.user.id
+      })
+      .limit(1);
+
+      if (!likedMovie[0]) {
+        return res.status(404).send({ response: "Not liked" });
       } else {
-        return res.status(400).send({ response: "Not liked" });
+        return res.json({ response: "Liked", id: likedMovie[0].id });
       }
-    } catch (error) {
-      return res
+    } catch(error) {
+        return res
         .status(500)
         .send({ response: "Something went wrong with the database" });
     }
   } else {
-    return res.status(403).send({ response: "not logged in" });
+    return res.status(404).send({ response: "No movie id" });
   }
 });
 
 // get all liked movies from a user
 router.get("/", async (req, res) => {
-  if (req.session.user) {
-    try {
-      const userLikedList = await MovieLike.query().where(
-        "user_id",
-        req.session.user.id
-      );
-      return res.json(userLikedList);
-    } catch (error) {
+  if (!req.session.user) {
+    return res.status(403).send({ response: "you need to log in" });
+  }
+  
+  try {
+    const userLikedList = await MovieLike.query().where({
+      user_id: req.session.user.id
+    });
+    return res.json(userLikedList);
+  } catch (error) {
       return res
         .status(500)
         .send({ response: "Something went wrong with the database" });
-    }
-  } else {
-    return res.status(403).send({ response: "not logged in" });
   }
 });
 
 // post new like
 router.post("/", async (req, res) => {
   const { movie_id } = req.body;
+
+  if (!req.session.user) {
+    return res.status(403).send({ response: "you need to log in" });
+  }
+
   if (movie_id) {
-    if (req.session.user) {
-      try {
-        const isMovieLiked = await MovieLike.query()
-          .where({
-            movie_id: movie_id,
-            user_id: req.session.user.id,
-          })
-          .limit(1);
-        if (!isMovieLiked[0]) {
-          const newLike = await MovieLike.query().insert({
-            movie_id,
-            user_id: req.session.user.id,
-          });
-          return res.json(newLike);
-        } else {
-          return res
-            .status(400)
-            .send({ response: "You already like this movie" });
-        }
-      } catch (error) {
+    try {
+      const isMovieLiked = await MovieLike.query()
+        .where({
+          movie_id: movie_id,
+          user_id: req.session.user.id,
+        })
+        .limit(1);
+      if (!isMovieLiked[0]) {
+        const newLike = await MovieLike.query().insert({
+          movie_id,
+          user_id: req.session.user.id,
+        });
+        return res.json(newLike);
+      } else {
         return res
-          .status(500)
-          .send({ response: "something went wrong in the database", error });
+          .status(400)
+          .send({ response: "You already like this movie" });
       }
-    } else {
-      return res.status(403).send({ response: "not logged in" });
+    } catch (error) {
+      return res
+        .status(500)
+        .send({ response: "something went wrong in the database" });
     }
   } else {
-    return res.status(400).send({ response: "Missing fields" });
+    return res.status(400).send({ response: "No id provided" });
   }
 });
 
-//Unlike a movie
+// Unlike a movie
 router.delete("/:id", async (req, res) => {
-  likeId = req.params.id;
-  if (req.session.user) {
+  const likeId = req.params.id;
+
+  if (!req.session.user) {
+    return res.status(403).send({ response: "you need to log in" });
+  }
+  
+  if (likeId) {
     try {
       await MovieLike.query().deleteById(likeId);
-      return res.status(200).send({ response: "successfully unliked movie" });
+      return res.send({ response: "successfully unliked movie" });
     } catch (error) {
       return res.status(500).send({ response: "could not unlike movie" });
     }
   } else {
-    return res.status(403).send({ response: "Not logged in" });
+    return res.status(404).send({ response: "No id provided" });
   }
 });
 

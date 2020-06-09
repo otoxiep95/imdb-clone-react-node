@@ -1,46 +1,47 @@
 const express = require("express");
-
 const router = express.Router();
-const User = require("../../models/User.js");
 const WatchLink = require("../../models/WatchLink.js");
 
+// check if user has watchlisted movie
 router.get("/hasWatchLink/:movieId", async (req, res) => {
   const movieId = req.params.movieId;
 
-  if (req.session.user) {
+  if (!req.session.user) {
+    return res.status(403).send({ response: "you need to log in" });
+  }
+
+  if (movieId) {
     try {
-      const watchLink = await WatchLink.query()
+      const watchListedMovie = await WatchLink.query()
         .where({
           movie_id: movieId,
           user_id: req.session.user.id,
         })
         .limit(1);
-      if (watchLink[0]) {
-        //res.json(watchLink);
-        return res
-          .status(200)
-          .send({ response: "In list", id: watchLink[0].id });
+
+      if (!watchListedMovie[0]) {
+        return res.status(404).send({ response: "Movie is not in watchlist" });
       } else {
-        return res.status(404).send({ response: "Not listed" });
+        return res.json({ response: "Movie is watchlisted", id: watchListedMovie[0].id });
       }
     } catch (error) {
       return res
         .status(500)
-        .send({ response: "Something went wrong with the database", error });
+        .send({ response: "Something went wrong with the database" });
     }
-  } else {
-    return res.status(404).send({ response: "not logged in" });
   }
 });
 
-//get all movies in watch list of session user
+// get all movies in watchlist of session user
 router.get("/", async (req, res) => {
-  //check if user is logged in (not done)
+  if (!req.session.user) {
+    return res.status(403).send({ response: "you need to log in" });
+  }
+  
   try {
-    const userWatchList = await WatchLink.query().where(
-      "user_id",
-      req.session.user.id
-    );
+    const userWatchList = await WatchLink.query().where({
+      user_id: req.session.user.id
+    })
     return res.json(userWatchList);
   } catch (error) {
     return res
@@ -49,61 +50,62 @@ router.get("/", async (req, res) => {
   }
 });
 
-//post new watchlink movie and user
+// add new movie to watchlist
 router.post("/", async (req, res) => {
-  //const movieId = req.params.movieId;
   const { movie_id } = req.body;
 
-  //check if user is logged in (not done)
+  if (!req.session.user) {
+    return res.status(403).send({ response: "you need to log in" });
+  }
+
   if (movie_id) {
-    if (req.session.user) {
-      try {
-        const existingWatchLink = await WatchLink.query()
-          .where({
-            movie_id: movie_id,
-            user_id: req.session.user.id,
-          })
-          .limit(1);
-        //res.json(existingWatchLink);
-        if (!existingWatchLink[0]) {
-          const newWatchLink = await WatchLink.query().insert({
-            user_id: req.session.user.id,
-            movie_id: movie_id,
-          });
-          return res.json(newWatchLink);
-        } else {
-          //res.json(existingWatchLink);
-          return res
-            .status(404)
-            .send({ response: "You already have it in the watching link" });
-        }
-      } catch (error) {
-        return res.status(500).send({
-          response: "Something went wrong with the database",
-          error: error,
+    try {
+      const existingWatchLink = await WatchLink.query()
+        .where({
+          movie_id: movie_id,
+          user_id: req.session.user.id,
+        })
+        .limit(1);
+      if (!existingWatchLink[0]) {
+        const newWatchLink = await WatchLink.query().insert({
+          user_id: req.session.user.id,
+          movie_id: movie_id,
         });
+        return res.json(newWatchLink);
+      } else {
+        return res
+          .status(404)
+          .send({ response: "You already have the movie in the watchlist" });
       }
-    } else {
-      return res.status(403).send({ response: "fuck off you are not logged" });
+    } catch (error) {
+      return res.status(500).send({
+        response: "Something went wrong with the database"
+      });
     }
   } else {
-    return res.status(404).send({ response: "Missing fields" });
+    return res.status(404).send({ response: "No movie id provided" });
   }
 });
 
+// remove movie from watchlist
 router.delete("/:id", async (req, res) => {
   watchLinkId = req.params.id;
-  if (req.session.user) {
+
+  if (!req.session.user) {
+    return res.status(403).send({ response: "you need to log in" });
+  }
+
+  if (watchLinkId) {
     try {
       await WatchLink.query().deleteById(watchLinkId);
-      return res.status(200).send({ response: "success deleted" });
+      return res.status(200).send({ response: "successfully deleted" });
     } catch (error) {
-      return res.status(500).send({ response: "couldnt delele watchLink" });
+      return res.status(500).send({ response: "could not delete watchLink" });
     }
   } else {
-    return res.status(403).send({ response: "Not logged in" });
+    return res.status(404).send({ response: "no id provided" });
   }
 });
 
-// Export to api.js
+
 module.exports = router;

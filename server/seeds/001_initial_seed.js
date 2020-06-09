@@ -1,14 +1,11 @@
 exports.seed = function (knex) {
-  // Deletes ALL existing entries
-  // Deletes ALL data of todos
-  return knex("watchlink")
+  return knex("watchLink")
     .del()
     .then(() => {
-      //Delete ALL data of users
       return knex("review")
         .del()
         .then(() => {
-          return knex("movielike")
+          return knex("movieLike")
             .del()
             .then(() => {
               return knex("users").del();
@@ -16,7 +13,6 @@ exports.seed = function (knex) {
         });
     })
     .then(() => {
-      //Inserts new data into users
       return knex("users").insert([
         {
           username: "alpaketo",

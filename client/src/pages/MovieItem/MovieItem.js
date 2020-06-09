@@ -75,7 +75,6 @@ export default function MovieItem({ isAuthenticated, keys, match, location }) {
       })
       .then((data) => {
         if (data) {
-      
           setWatchListId(data.id);
         }
       });
@@ -100,7 +99,6 @@ export default function MovieItem({ isAuthenticated, keys, match, location }) {
       })
       .then((data) => {
         if (data) {
-       
           setLikeId(data.id);
         }
       });
@@ -126,7 +124,6 @@ export default function MovieItem({ isAuthenticated, keys, match, location }) {
         }
       })
       .then((data) => {
-       
         setWatchListId(data.id);
       });
   }
@@ -151,7 +148,6 @@ export default function MovieItem({ isAuthenticated, keys, match, location }) {
         }
       })
       .then((data) => {
-      
         setLikeId(data.id);
       });
   }
@@ -167,10 +163,6 @@ export default function MovieItem({ isAuthenticated, keys, match, location }) {
       credentials: "include",
     }).then((res) => {
       if (res.ok) {
-        // const index = movies.findIndex((movie) => movie.likeId === id);
-        // const newMovies = [...movies];
-        // newMovies.splice(index, 1);
-        // setMovies(newMovies);
         if (endpoint === "watch") {
           setIsInWatchList(false);
         } else if (endpoint === "liked") {

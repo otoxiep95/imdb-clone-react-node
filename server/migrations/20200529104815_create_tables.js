@@ -12,7 +12,7 @@ exports.up = function (knex) {
       table.increments("id");
       table.integer("user_id").unsigned().notNullable();
       table.integer("movie_id").unsigned().notNullable();
-      // Set the foreign key
+      
       table
         .foreign("user_id")
         .references("id")
@@ -53,7 +53,6 @@ exports.up = function (knex) {
 exports.down = function (knex) {
   return (
     knex.schema
-      // Here, delete tables in reverse order because todos depends on users
       .dropTableIfExists("movieLike")
       .dropTableIfExists("watchlink")
       .dropTableIfExists("review")

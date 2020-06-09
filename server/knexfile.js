@@ -1,4 +1,3 @@
-// Update with your config settings.
 const credentials = require("./config/db_config.js");
 
 module.exports = {

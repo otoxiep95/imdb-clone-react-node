@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import Login from "./pages/Login/Login.js";
 import Navbar from "./components/Navbar/Navbar.js";
 import Signup from "./pages/Signup/Signup.js";
@@ -21,7 +16,6 @@ import "./App.css";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  //const [isLoading, setIsLoading] = useState(true);
 
   async function handleAuthentication() {
     await fetch("http://localhost:9090/api/users/isloggedin", {

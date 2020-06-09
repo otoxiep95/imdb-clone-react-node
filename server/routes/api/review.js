@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
   return res.json(reviews);
 });
 
-//check if user has review //TESTED
+//check if user has review
 router.get("/hasreview/:movieId/", async (req, res) => {
   const movieId = req.params.movieId;
 
@@ -82,7 +82,7 @@ router.post("/", async (req, res) => {
           content,
           user_id: req.session.user.id,
           movie_id,
-        });
+        }).withGraphFetched("user");
 
         return res.send({ response: "Review posted", review: newReview });
       } else {

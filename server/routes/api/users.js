@@ -10,10 +10,9 @@ var saltRounds = bcrypt.genSaltSync(10);
 //check if user is logged in
 router.get("/isloggedin", async (req, res) => {
   if (!req.session.user) {
-    return res.status(401).send({ response: "Not logged in" });
+    return res.status(403).send({ response: "Not logged in" });
   }
   return res
-    .status(200)
     .send({ user: req.session.user, response: "Authenticated" });
 });
 
@@ -35,6 +34,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// register user
 router.post("/register", async (req, res, next) => {
   const { username, email, password, confirm_password } = req.body;
 
@@ -82,7 +82,7 @@ router.post("/register", async (req, res, next) => {
   });
 });
 
-//login
+// log in
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -115,7 +115,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-//Logout
+// log out
 router.get("/logout", async (req, res) => {
   req.session.destroy((error) => {
     if (error) {
@@ -126,7 +126,7 @@ router.get("/logout", async (req, res) => {
   });
 });
 
-//delete user
+// delete user
 router.delete("/", async (req, res) => {
   if (req.session.user) {
     const deleteUser = await User.query().deleteById(req.session.user.id);
@@ -187,6 +187,7 @@ router.post("/forgotpassword", async (req, res) => {
   }
 })
 
+// reset password
 router.post("/passwordreset", async (req, res) => {
   const { id, recoveryLink, newPassword, confirmNewPassword } = req.body;
 
@@ -236,5 +237,5 @@ router.post("/passwordreset", async (req, res) => {
   } 
 })
 
-// Export to api.js
+
 module.exports = router;
