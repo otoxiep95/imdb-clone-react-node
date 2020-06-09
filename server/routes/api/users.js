@@ -220,7 +220,7 @@ router.post("/passwordreset", async (req, res) => {
       }
 
       try {
-        await User.query().update({
+        await user.$query().patch({
           password: hashedPassword,
           recovery_link_status: false
         })
