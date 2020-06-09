@@ -3,7 +3,6 @@ import "./ReviewCard.css";
 
 export default function ReviewCard({ review }) {
   const reviewPosted = new Date(review.created_at);
-  console.log(review)
   const formattedDate = reviewPosted.toLocaleDateString("en-us", {
     weekday: "long",
     day: "numeric",
